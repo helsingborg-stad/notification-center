@@ -35,3 +35,5 @@ $loader->register();
 
 // Start application
 new NotificationCenter\App();
+
+register_activation_hook( __FILE__, 'NotificationCenter\App::install');
