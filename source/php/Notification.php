@@ -10,10 +10,24 @@ class Notification
     {
         $this->entityTypes = include(NOTIFICATIONCENTER_PATH . 'source/php/config/EntityTypes.php');
 
-        add_action('wp_insert_comment', array($this, 'commentCreated'), 99, 2);
+        add_action('wp_insert_comment', array($this, 'newComment'), 99, 2);
+
+        // Cron event
+        add_action('send_notification_email', array($this, 'emailNotifiers'), 10, 1);
     }
 
-    public function commentCreated($commentId, $commentObj)
+    public function testing()
+    {
+        $this->emailNotifiers(26);
+    }
+
+    /**
+     * Do notifications on insert comment hook
+     * @param  int $commentId  The new comment's ID
+     * @param  obj $commentObj WP_Comment object
+     * @return void
+     */
+    public function newComment($commentId, $commentObj)
     {
         // New post comment
         $notifier = get_post_field('post_author', $commentObj->comment_post_ID);
@@ -60,6 +74,9 @@ class Notification
         // Get the notification_object_id
         $notificationId = $wpdb->insert_id;
 
+        // Schedule cron event to notify by email
+        wp_schedule_single_event(time() + 20, 'send_notification_email', array($notificationId));
+
         // Insert notification recipients and sender in 'notification' table
         $values = array();
         $placeHolders = array();
@@ -71,13 +88,95 @@ class Notification
                 array_push($values, $notificationId, $notifier, $sender);
                 $placeHolders[] = "(%d, %d, %d)";
             } else {
-                // Sett sender to NULL if missing
+                // Set sender to NULL if missing
                 array_push($values, $notificationId, $notifier);
                 $placeHolders[] = "(%d, %d, NULL)";
             }
-
         }
         $query .= implode(', ', $placeHolders);
         $wpdb->query($wpdb->prepare("$query ", $values));
     }
+
+    /**
+     * Send email to all notifiers
+     * @param  int $notificationId Notification ID
+     * @return void
+     */
+    public function emailNotifiers($notificationId) {
+        /**
+         * TODO
+         * Skip if user has "Entity type email setting = Off"
+         * Error handling
+         * Style email message and fix the text
+         * Change sender email
+         */
+
+        global $wpdb;
+
+        // Get notificaiton data
+        $notificationData = $wpdb->get_row("
+            SELECT no.ID, no.entity_type, no.entity_id, no.created, n.sender_id, u.display_name
+            FROM {$wpdb->prefix}notification_objects no
+            INNER JOIN {$wpdb->prefix}notifications n
+                ON no.ID = n.notification_object_id
+            LEFT JOIN {$wpdb->users} u
+                ON u.ID = n.sender_id
+            WHERE no.ID = {$notificationId}
+            GROUP BY no.ID"
+        );
+
+        // Build notification message
+        $message = $this->buildMessage(
+                                $notificationData->entity_type,
+                                $notificationData->entity_id,
+                                $notificationData->display_name
+                            );
+        $message .= '<br><br>---<br>' . sprintf(__('This message was sent via %s', 'notification-center'), get_site_url());
+
+        // Get all notifiers
+        $notifiers = $wpdb->get_results("
+            SELECT u.user_email
+            FROM {$wpdb->prefix}notifications n
+            LEFT JOIN {$wpdb->users} u
+                ON n.notifier_id = u.ID
+            WHERE n.notification_object_id = {$notificationId}"
+        );
+
+        if (is_array($notifiers) && !empty($notifiers)) {
+            foreach ($notifiers as $key => $notifier) {
+                //Send the email
+                $mail = wp_mail(
+                    $notifier->user_email,
+                    sprintf(__('New notification on %s', 'notification-center'), get_bloginfo()),
+                    $message,
+                    array(
+                        'From: ' . get_bloginfo() . ' <' . get_option('admin_email') . '>',
+                        'Content-Type: text/html; charset=UTF-8'
+                    )
+                );
+            }
+        }
+    }
+
+    /**
+     * Build the notification message
+     * @param  int    $entityType   Entity type ID
+     * @param  int    $entityId     Entity ID
+     * @param  string $senderName   Sender name
+     * @return string               The notification message
+     */
+    public function buildMessage($entityType, $entityId, $senderName)
+    {
+        /**
+         * TODO
+         * Add Post title + permalink, Created on, add class=entityType
+         */
+
+        // Set sender name to 'Someone' if missing
+        $senderName = $senderName ? $senderName : __('Someone', 'notification-center');
+        $message = $senderName . ' ' . $this->entityTypes[$entityType]['message'];
+
+        return $message;
+    }
+
 }
