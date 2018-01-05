@@ -20,16 +20,21 @@ class Notification
         $this->insertNotifications(0, $commentObj->comment_post_ID, array((int) $notifier), $commentObj->user_id);
 
         // New comment reply
+        if ($commentObj->comment_parent > 0) {
+            // Get parent comment object
+            $parentComment = get_comment($commentObj->comment_parent);
+            $this->insertNotifications(1, $commentObj->comment_post_ID, array((int) $parentComment->user_id), $commentObj->user_id);
+        }
 
         // New thread contribution
     }
 
     /**
      * Insert notifications to db
-     * @param  int    $entityType Entity type
-     * @param  int    $entityId   Entity ID, eg. Post ID
-     * @param  array  $notifier   List of notifier IDs
-     * @param  int    $sender     Sender ID
+     * @param  int      $entityType Entity type
+     * @param  int      $entityId   Entity ID, eg. Post ID
+     * @param  array    $notifier   List of notifier IDs
+     * @param  int      $sender     Sender ID
      * @return void
      */
     public function insertNotifications(int $entityType, int $entityId, $notifiers = array(), int $sender)
@@ -60,13 +65,19 @@ class Notification
         $placeHolders = array();
         $tableName = $wpdb->prefix . 'notifications';
         $query = "INSERT INTO $tableName (notification_object_id, notifier_id, sender_id) VALUES ";
-        // Loop through notifiers to insert multiple rows
+        // Loop through all notifiers to insert them as multiple rows
         foreach ($notifiers as $notifier) {
-            array_push($values, $notificationId, $notifier, $sender);
-            $placeHolders[] = "(%d, %d, %d)";
+            if ($sender !== 0) {
+                array_push($values, $notificationId, $notifier, $sender);
+                $placeHolders[] = "(%d, %d, %d)";
+            } else {
+                // Sett sender to NULL if missing
+                array_push($values, $notificationId, $notifier);
+                $placeHolders[] = "(%d, %d, NULL)";
+            }
+
         }
         $query .= implode(', ', $placeHolders);
-
         $wpdb->query($wpdb->prepare("$query ", $values));
     }
 }

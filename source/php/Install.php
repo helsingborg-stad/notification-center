@@ -48,7 +48,7 @@ class Install
           ID bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
           notification_object_id bigint(20) UNSIGNED NOT NULL,
           notifier_id bigint(20) UNSIGNED NOT NULL,
-          sender_id bigint(20) UNSIGNED NOT NULL,
+          sender_id bigint(20) UNSIGNED,
           status tinyint(1) DEFAULT 0 NOT NULL,
           PRIMARY KEY (ID),
           INDEX fk_notification_object_idx (notification_object_id ASC),
