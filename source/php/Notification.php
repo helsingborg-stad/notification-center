@@ -66,6 +66,7 @@ class Notification
         $wpdb->insert(
             $tableName,
             array(
+                'sender_id' => $sender != 0 ? $sender : NULL,
                 'entity_type' => $entityType,
                 'entity_id' => $entityId,
                 'created' => current_time('mysql')
@@ -77,21 +78,15 @@ class Notification
         // Schedule cron event to notify by email
         wp_schedule_single_event(time() + 20, 'send_notification_email', array($notificationId));
 
-        // Insert notification recipients and sender in 'notification' table
+        // Insert notification recipients in 'notification' table
         $values = array();
         $placeHolders = array();
         $tableName = $wpdb->prefix . 'notifications';
-        $query = "INSERT INTO $tableName (notification_object_id, notifier_id, sender_id) VALUES ";
+        $query = "INSERT INTO $tableName (notification_object_id, notifier_id) VALUES ";
         // Loop through all notifiers to insert them as multiple rows
         foreach ($notifiers as $notifier) {
-            if ($sender !== 0) {
-                array_push($values, $notificationId, $notifier, $sender);
-                $placeHolders[] = "(%d, %d, %d)";
-            } else {
-                // Set sender to NULL if missing
                 array_push($values, $notificationId, $notifier);
-                $placeHolders[] = "(%d, %d, NULL)";
-            }
+                $placeHolders[] = "(%d, %d)";
         }
         $query .= implode(', ', $placeHolders);
         $wpdb->query($wpdb->prepare("$query ", $values));
@@ -115,12 +110,12 @@ class Notification
 
         // Get notificaiton data
         $notificationData = $wpdb->get_row("
-            SELECT no.ID, no.entity_type, no.entity_id, no.created, n.sender_id, u.display_name
+            SELECT no.ID, no.entity_type, no.entity_id, no.created, no.sender_id, u.display_name
             FROM {$wpdb->prefix}notification_objects no
             INNER JOIN {$wpdb->prefix}notifications n
                 ON no.ID = n.notification_object_id
             LEFT JOIN {$wpdb->users} u
-                ON u.ID = n.sender_id
+                ON u.ID = no.sender_id
             WHERE no.ID = {$notificationId}
             GROUP BY no.ID"
         );
@@ -175,6 +170,8 @@ class Notification
         // Set sender name to 'Someone' if missing
         $senderName = $senderName ? $senderName : __('Someone', 'notification-center');
         $message = $senderName . ' ' . $this->entityTypes[$entityType]['message'];
+
+        //$message .= sprintf(__('Show %s', 'notification-center'), $this->entityTypes[$entityType]['label']);
 
         return $message;
     }
