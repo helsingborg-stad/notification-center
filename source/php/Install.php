@@ -30,11 +30,18 @@ class Install
         */
         $sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}notification_objects (
           ID bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+          sender_id bigint(20) UNSIGNED,
           entity_type bigint(20) UNSIGNED NOT NULL,
           entity_id bigint(20) UNSIGNED NOT NULL,
           created datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
           status tinyint(1) DEFAULT 0 NOT NULL,
-          PRIMARY KEY (ID)
+          PRIMARY KEY (ID),
+          INDEX fk_notification_sender_id_idx (sender_id ASC),
+          CONSTRAINT fk_notification_sender_id
+            FOREIGN KEY (sender_id)
+            REFERENCES {$wpdb->prefix}users (ID)
+            ON DELETE NO ACTION
+            ON UPDATE NO ACTION
         ) $charsetCollate;";
 
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
@@ -48,12 +55,10 @@ class Install
           ID bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
           notification_object_id bigint(20) UNSIGNED NOT NULL,
           notifier_id bigint(20) UNSIGNED NOT NULL,
-          sender_id bigint(20) UNSIGNED,
           status tinyint(1) DEFAULT 0 NOT NULL,
           PRIMARY KEY (ID),
           INDEX fk_notification_object_idx (notification_object_id ASC),
           INDEX fk_notification_notifier_id_idx (notifier_id ASC),
-          INDEX fk_notification_sender_id_idx (sender_id ASC),
           CONSTRAINT fk_notification_object
             FOREIGN KEY (notification_object_id)
             REFERENCES {$wpdb->prefix}notification_objects (ID)
@@ -61,11 +66,6 @@ class Install
             ON UPDATE NO ACTION,
           CONSTRAINT fk_notification_notifier_id
             FOREIGN KEY (notifier_id)
-            REFERENCES {$wpdb->prefix}users (ID)
-            ON DELETE NO ACTION
-            ON UPDATE NO ACTION,
-          CONSTRAINT fk_notification_sender_id
-            FOREIGN KEY (sender_id)
             REFERENCES {$wpdb->prefix}users (ID)
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
