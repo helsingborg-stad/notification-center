@@ -10,15 +10,10 @@ class Notification
     {
         $this->entityTypes = include(NOTIFICATIONCENTER_PATH . 'source/php/config/EntityTypes.php');
 
-        add_action('wp_insert_comment', array($this, 'newComment'), 99, 2);
-
         // Cron event
         add_action('send_notification_email', array($this, 'emailNotifiers'), 10, 1);
-    }
 
-    public function testing()
-    {
-        $this->emailNotifiers(26);
+        add_action('wp_insert_comment', array($this, 'newComment'), 99, 2);
     }
 
     /**
@@ -31,21 +26,21 @@ class Notification
     {
         // Entity: New post comment
         $notifier = get_post_field('post_author', $commentObj->comment_post_ID);
-        $this->insertNotifications(0, $commentObj->comment_post_ID, array((int) $notifier), $commentObj->user_id);
+        $this->insertNotifications(0, $commentId, array((int) $notifier), $commentObj->user_id);
 
         if ($commentObj->comment_parent > 0) {
-            // Entity: New comment reply
+            // Entity: Comment reply
             $parentComment = get_comment($commentObj->comment_parent);
-            $this->insertNotifications(1, $commentObj->comment_post_ID, array((int) $parentComment->user_id), $commentObj->user_id);
+            $this->insertNotifications(1, $commentId, array((int) $parentComment->user_id), $commentObj->user_id);
 
-            // Entity: New thread contribution
+            // Entity: Post thread contribution
             $contributors = get_comments(array(
                                 'parent' => $commentObj->comment_parent,
                                 'author__not_in' => array($commentObj->user_id)
                             ));
 
-            $notifiers = array();
             if (!empty($contributors)) {
+                $notifiers = array();
                 foreach ($contributors as $key => &$contributor) {
                     // Continue if user does not exist
                     if (!$contributor->user_id) {
@@ -55,15 +50,15 @@ class Notification
                     $notifiers[] = (int) $contributor->user_id;
                 }
 
-                $this->insertNotifications(2, $commentObj->comment_post_ID, $notifiers, $commentObj->user_id);
+                $this->insertNotifications(2, $commentId, $notifiers, $commentObj->user_id);
             }
         }
     }
 
     /**
-     * Insert notifications to db
-     * @param  int      $entityType Entity type
-     * @param  int      $entityId   Entity ID, eg. Post ID
+     * Insert notifications to DB
+     * @param  int      $entityType Entity type, eg. 'post' or 'comment'
+     * @param  int      $entityId   Entity ID, eg. Post or Comment ID
      * @param  array    $notifier   List of notifier IDs
      * @param  int      $sender     Sender ID
      * @return void
@@ -116,14 +111,6 @@ class Notification
      */
     public function emailNotifiers($notificationId)
     {
-        /**
-         * TODO
-         * Skip if user has "Entity type email setting = Off"
-         * Error handling
-         * Style email message and fix the text
-         * Change sender email
-         */
-
         global $wpdb;
 
         // Get notificaiton data
@@ -178,12 +165,40 @@ class Notification
      * @param  string $senderName   Sender name
      * @return string               The notification message
      */
-    public function buildMessage($entityType, $entityId, $senderName)
+    public function buildMessage($entityType, $entityId, $senderName) : string
     {
-        // Set sender name to 'Someone' if missing
+        // Set sender name to someone if missing
         $senderName = $senderName ? $senderName : __('Someone', 'notification-center');
-        $message  = '<strong>' . $senderName . '</strong> ' . $this->entityTypes[$entityType]['message'];
-        $message .= ' <a href="' . get_the_permalink($entityId) . '">"' . get_the_title($entityId) . '"</a>';
+
+        // Build message depending on entity type, default is Post
+        switch ($this->entityTypes[$entityType]['type']) {
+            case 'comment':
+                $commentObj = get_comment($entityId);
+                // Get the comment/answer target
+                $commentUrl = $commentObj->comment_parent > 0 ? get_the_permalink($commentObj->comment_post_ID) . '#answer-' .  $entityId : get_comment_link($entityId);
+
+                $message = sprintf('<strong>%s</strong> %s <a href="%s" target="_blank">"%s"</a><br><br><a href="%s" target="_blank">%s %s</a>',
+                    $senderName,
+                    $this->entityTypes[$entityType]['message'],
+                    get_the_permalink($commentObj->comment_post_ID),
+                    get_the_title($commentObj->comment_post_ID),
+                    $commentUrl,
+                    __('Show', 'notification-center'),
+                    strtolower($this->entityTypes[$entityType]['label'])
+                );
+
+                break;
+
+            default:
+                $message = sprintf('<strong>%s</strong> %s <a href="%s" target="_blank">"%s"</a>',
+                    $senderName,
+                    $this->entityTypes[$entityType]['message'],
+                    get_the_permalink($entityId),
+                    get_the_title($entityId)
+                );
+
+                break;
+        }
 
         return $message;
     }
