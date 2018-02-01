@@ -29,18 +29,35 @@ class Notification
      */
     public function newComment($commentId, $commentObj)
     {
-        // New post comment
+        // Entity: New post comment
         $notifier = get_post_field('post_author', $commentObj->comment_post_ID);
         $this->insertNotifications(0, $commentObj->comment_post_ID, array((int) $notifier), $commentObj->user_id);
 
-        // New comment reply
         if ($commentObj->comment_parent > 0) {
-            // Get parent comment object
+            // Entity: New comment reply
             $parentComment = get_comment($commentObj->comment_parent);
             $this->insertNotifications(1, $commentObj->comment_post_ID, array((int) $parentComment->user_id), $commentObj->user_id);
-        }
 
-        // New thread contribution
+            // Entity: New thread contribution
+            $contributors = get_comments(array(
+                                'parent' => $commentObj->comment_parent,
+                                'author__not_in' => array($commentObj->user_id)
+                            ));
+
+            $notifiers = array();
+            if (!empty($contributors)) {
+                foreach ($contributors as $key => &$contributor) {
+                    // Continue if user does not exist
+                    if (!$contributor->user_id) {
+                        continue;
+                    }
+
+                    $notifiers[] = (int) $contributor->user_id;
+                }
+
+                $this->insertNotifications(2, $commentObj->comment_post_ID, $notifiers, $commentObj->user_id);
+            }
+        }
     }
 
     /**
@@ -55,8 +72,8 @@ class Notification
     {
         global $wpdb;
 
-        // Remove sender from notifier array, return if notifiers is empty
-        $notifiers = array_diff($notifiers, array($sender));
+        // Remove duplicates and sender from notifier array, return if notifiers is empty
+        $notifiers = array_diff(array_unique($notifiers), array($sender));
         if (!$notifiers) {
             return false;
         }
@@ -66,7 +83,7 @@ class Notification
         $wpdb->insert(
             $tableName,
             array(
-                'sender_id' => $sender != 0 ? $sender : NULL,
+                'sender_id' => $sender != 0 ? $sender : null,
                 'entity_type' => $entityType,
                 'entity_id' => $entityId,
                 'created' => current_time('mysql')
@@ -85,8 +102,8 @@ class Notification
         $query = "INSERT INTO $tableName (notification_object_id, notifier_id) VALUES ";
         // Loop through all notifiers to insert them as multiple rows
         foreach ($notifiers as $notifier) {
-                array_push($values, $notificationId, $notifier);
-                $placeHolders[] = "(%d, %d)";
+            array_push($values, $notificationId, $notifier);
+            $placeHolders[] = "(%d, %d)";
         }
         $query .= implode(', ', $placeHolders);
         $wpdb->query($wpdb->prepare("$query ", $values));
@@ -97,7 +114,8 @@ class Notification
      * @param  int $notificationId Notification ID
      * @return void
      */
-    public function emailNotifiers($notificationId) {
+    public function emailNotifiers($notificationId)
+    {
         /**
          * TODO
          * Skip if user has "Entity type email setting = Off"
@@ -162,18 +180,11 @@ class Notification
      */
     public function buildMessage($entityType, $entityId, $senderName)
     {
-        /**
-         * TODO
-         * Add Post title + permalink, Created on, add class=entityType
-         */
-
         // Set sender name to 'Someone' if missing
         $senderName = $senderName ? $senderName : __('Someone', 'notification-center');
-        $message = $senderName . ' ' . $this->entityTypes[$entityType]['message'];
-
-        //$message .= sprintf(__('Show %s', 'notification-center'), $this->entityTypes[$entityType]['label']);
+        $message  = '<strong>' . $senderName . '</strong> ' . $this->entityTypes[$entityType]['message'];
+        $message .= ' <a href="' . get_the_permalink($entityId) . '">"' . get_the_title($entityId) . '"</a>';
 
         return $message;
     }
-
 }
