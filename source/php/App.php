@@ -6,11 +6,12 @@ class App
 {
     public function __construct()
     {
-        // add_action('admin_enqueue_scripts', array($this, 'enqueueStyles'));
-        // add_action('admin_enqueue_scripts', array($this, 'enqueueScripts'));
+        add_action('wp_enqueue_scripts', array($this, 'enqueueStyles'));
+        add_action('wp_enqueue_scripts', array($this, 'enqueueScripts'));
 
         new Install();
         new Notification();
+        new Shortcode();
     }
 
     /**
@@ -19,7 +20,7 @@ class App
      */
     public function enqueueStyles()
     {
-
+        wp_enqueue_style('notification-center', NOTIFICATIONCENTER_URL . '/dist/css/notification-center.min.css');
     }
 
     /**
@@ -28,6 +29,6 @@ class App
      */
     public function enqueueScripts()
     {
-
+        wp_enqueue_script('notification-center', NOTIFICATIONCENTER_URL . '/dist/js/notification-center.min.js', '', '', true);
     }
 }
