@@ -115,21 +115,19 @@ class Notification
 
         // Get notificaiton data
         $notificationData = $wpdb->get_row("
-            SELECT no.ID, no.entity_type, no.entity_id, no.created, no.sender_id, u.display_name
+            SELECT no.ID, no.entity_type, no.entity_id, no.created, no.sender_id
             FROM {$wpdb->prefix}notification_objects no
             INNER JOIN {$wpdb->prefix}notifications n
                 ON no.ID = n.notification_object_id
-            LEFT JOIN {$wpdb->users} u
-                ON u.ID = no.sender_id
             WHERE no.ID = {$notificationId}
             GROUP BY no.ID"
         );
 
         // Build notification message
-        $message = $this->buildMessage(
+        $message = self::buildMessage(
                                 $notificationData->entity_type,
                                 $notificationData->entity_id,
-                                $notificationData->display_name
+                                $notificationData->sender_id
                             );
         $message .= '<br><br>---<br>' . sprintf(__('This message was sent via %s', 'notification-center'), get_site_url());
 
@@ -162,37 +160,38 @@ class Notification
      * Build the notification message
      * @param  int    $entityType   Entity type ID
      * @param  int    $entityId     Entity ID
-     * @param  string $senderName   Sender name
+     * @param  string $senderId     Sender ID
      * @return string               The notification message
      */
-    public function buildMessage($entityType, $entityId, $senderName) : string
+    public static function buildMessage($entityType, $entityId, $senderId) : string
     {
-        // Set sender name to someone if missing
-        $senderName = $senderName ? $senderName : __('Someone', 'notification-center');
+        $entityTypes = include(NOTIFICATIONCENTER_PATH . 'source/php/config/EntityTypes.php');
+
+        $senderName = self::getUserName($senderId);
 
         // Build message depending on entity type, default is Post
-        switch ($this->entityTypes[$entityType]['type']) {
+        switch ($entityTypes[$entityType]['type']) {
             case 'comment':
                 $commentObj = get_comment($entityId);
                 // Get the comment/answer target
                 $commentUrl = $commentObj->comment_parent > 0 ? get_the_permalink($commentObj->comment_post_ID) . '#answer-' .  $entityId : get_comment_link($entityId);
 
-                $message = sprintf('<strong>%s</strong> %s <a href="%s" target="_blank">"%s"</a><br><br><a href="%s" target="_blank">%s %s</a>',
+                $message = sprintf('<strong>%s</strong> %s "<a href="%s">%s</a>"<br><a href="%s">%s %s</a>',
                     $senderName,
-                    $this->entityTypes[$entityType]['message'],
+                    $entityTypes[$entityType]['message'],
                     get_the_permalink($commentObj->comment_post_ID),
                     get_the_title($commentObj->comment_post_ID),
                     $commentUrl,
                     __('Show', 'notification-center'),
-                    strtolower($this->entityTypes[$entityType]['label'])
+                    strtolower($entityTypes[$entityType]['label'])
                 );
 
                 break;
 
             default:
-                $message = sprintf('<strong>%s</strong> %s <a href="%s" target="_blank">"%s"</a>',
+                $message = sprintf('<strong>%s</strong> %s "<a href="%s">%s</a>"',
                     $senderName,
-                    $this->entityTypes[$entityType]['message'],
+                    $entityTypes[$entityType]['message'],
                     get_the_permalink($entityId),
                     get_the_title($entityId)
                 );
@@ -201,5 +200,26 @@ class Notification
         }
 
         return $message;
+    }
+
+    /**
+     * Get user name, either full name, first name or display name
+     * @param  int      $userId The user ID
+     * @return string           The user's name.
+     */
+    public static function getUserName($userId)
+    {
+        if (!$userId) {
+            return __('Someone', 'notification-center');
+        }
+
+        $userInfo = get_userdata($userId);
+        if ($userInfo->first_name) {
+            if ($userInfo->last_name) {
+                return $userInfo->first_name . ' ' . $userInfo->last_name;
+            }
+            return $userInfo->first_name;
+        }
+        return $userInfo->display_name;
     }
 }

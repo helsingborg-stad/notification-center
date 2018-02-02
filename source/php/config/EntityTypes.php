@@ -20,6 +20,6 @@ return [
         'type' => 'comment',
         'label' => __('Comment', 'notification-center'),
         'description' => 'Post thread contribution',
-        'message' => __('also commented on', 'notification-center')
+        'message' => __('also replied to a comment on', 'notification-center')
     ]
 ];
