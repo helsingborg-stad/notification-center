@@ -34,7 +34,6 @@ class Install
           entity_type bigint(20) UNSIGNED NOT NULL,
           entity_id bigint(20) UNSIGNED NOT NULL,
           created datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-          status tinyint(1) DEFAULT 0 NOT NULL,
           PRIMARY KEY (ID),
           INDEX fk_notification_sender_id_idx (sender_id ASC),
           CONSTRAINT fk_notification_sender_id
