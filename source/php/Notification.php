@@ -123,13 +123,17 @@ class Notification
             GROUP BY no.ID"
         );
 
-        // Build notification message
-        $message = self::buildMessage(
-                                $notificationData->entity_type,
-                                $notificationData->entity_id,
-                                $notificationData->sender_id
-                            );
-        $message .= '<br><br>---<br>' . sprintf(__('This message was sent via %s', 'notification-center'), get_site_url());
+        // Build the email message
+        $text = self::buildMessage($notificationData->entity_type, $notificationData->entity_id, $notificationData->sender_id);
+        $url = self::notificationUrl($notificationData->entity_type, $notificationData->entity_id);
+        $message = sprintf('%s <br><a href="%s">%s %s</a> <br><br>---<br> %s %s',
+            $text,
+            $url,
+            __('Show', 'notification-center'),
+            strtolower($this->entityTypes[$notificationData->entity_type]['label']),
+            __('This message was sent via', 'notification-center'),
+            get_site_url()
+        );
 
         // Get all notifiers
         $notifiers = $wpdb->get_results("
@@ -166,33 +170,24 @@ class Notification
     public static function buildMessage($entityType, $entityId, $senderId) : string
     {
         $entityTypes = include(NOTIFICATIONCENTER_PATH . 'source/php/config/EntityTypes.php');
-
         $senderName = self::getUserName($senderId);
 
         // Build message depending on entity type, default is Post
         switch ($entityTypes[$entityType]['type']) {
             case 'comment':
                 $commentObj = get_comment($entityId);
-                // Get the comment/answer target
-                $commentUrl = $commentObj->comment_parent > 0 ? get_the_permalink($commentObj->comment_post_ID) . '#answer-' .  $entityId : get_comment_link($entityId);
-
-                $message = sprintf('<strong>%s</strong> %s "<a href="%s">%s</a>"<br><a href="%s">%s %s</a>',
+                $message = sprintf('<strong>%s</strong> %s <strong>%s</strong>',
                     $senderName,
                     $entityTypes[$entityType]['message'],
-                    get_the_permalink($commentObj->comment_post_ID),
-                    get_the_title($commentObj->comment_post_ID),
-                    $commentUrl,
-                    __('Show', 'notification-center'),
-                    strtolower($entityTypes[$entityType]['label'])
+                    get_the_title($commentObj->comment_post_ID)
                 );
 
                 break;
 
             default:
-                $message = sprintf('<strong>%s</strong> %s "<a href="%s">%s</a>"',
+                $message = sprintf('<strong>%s</strong> %s <strong>%s</strong>',
                     $senderName,
                     $entityTypes[$entityType]['message'],
-                    get_the_permalink($entityId),
                     get_the_title($entityId)
                 );
 
@@ -200,6 +195,34 @@ class Notification
         }
 
         return $message;
+    }
+
+    /**
+     * Get the notification URL
+     * @param  int    $entityType   Entity type ID
+     * @param  int    $entityId     Entity ID
+     * @return string               The notification URL
+     */
+    public static function notificationUrl($entityType, $entityId) : string
+    {
+        $entityTypes = include(NOTIFICATIONCENTER_PATH . 'source/php/config/EntityTypes.php');
+
+        // Get URL depending on entity type, default is Post
+        switch ($entityTypes[$entityType]['type']) {
+            case 'comment':
+                $commentObj = get_comment($entityId);
+                // Get the comment/answer target
+                $url = $commentObj->comment_parent > 0 ? get_the_permalink($commentObj->comment_post_ID) . '#answer-' .  $entityId : get_comment_link($entityId);
+
+                break;
+
+            default:
+                $url = get_the_permalink($entityId);
+
+                break;
+        }
+
+        return $url;
     }
 
     /**
