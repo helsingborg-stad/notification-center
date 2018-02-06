@@ -11,7 +11,7 @@ class App
 
         new Install();
         new Notification();
-        new Shortcode();
+        new Dropdown();
     }
 
     /**
