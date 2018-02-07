@@ -71,6 +71,8 @@ class Dropdown
 
     public function changeStatus()
     {
+        ignore_user_abort(true);
+
         if (empty($_POST['notificationId'])) {
             wp_die();
         }
