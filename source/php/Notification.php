@@ -24,21 +24,19 @@ class Notification
      */
     public function newComment($commentId, $commentObj)
     {
-        // Entity: New post comment
-        $notifier = get_post_field('post_author', $commentObj->comment_post_ID);
-        $this->insertNotifications(0, $commentId, array((int) $notifier), $commentObj->user_id);
+        $notifiers = array();
 
         if ($commentObj->comment_parent > 0) {
             // Entity: Comment reply
             $parentComment = get_comment($commentObj->comment_parent);
-            $this->insertNotifications(1, $commentId, array((int) $parentComment->user_id), $commentObj->user_id);
+            $notifiers[] = (int)$parentComment->user_id;
+            $this->insertNotifications(1, $commentId, $notifiers, $commentObj->user_id);
 
-            // Entity: Post thread contribution
+            // Entity: Post thread contribution.
             $contributors = get_comments(array(
                                 'parent' => $commentObj->comment_parent,
-                                'author__not_in' => array($commentObj->user_id)
+                                'author__not_in' => array($commentObj->user_id, (int)$parentComment->user_id)
                             ));
-
             if (!empty($contributors)) {
                 $notifiers = array();
                 foreach ($contributors as $key => &$contributor) {
@@ -49,9 +47,14 @@ class Notification
 
                     $notifiers[] = (int) $contributor->user_id;
                 }
-
                 $this->insertNotifications(2, $commentId, $notifiers, $commentObj->user_id);
             }
+        }
+
+        // Entity: New post comment
+        $notifier = get_post_field('post_author', $commentObj->comment_post_ID);
+        if (!in_array($notifier, $notifiers)) {
+            $this->insertNotifications(0, $commentId, array((int) $notifier), $commentObj->user_id);
         }
     }
 
