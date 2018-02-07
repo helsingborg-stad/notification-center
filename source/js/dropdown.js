@@ -11,8 +11,7 @@ NotificationCenter.Notifications.Dropdown = (function ($) {
     }
 
     /**
-     * Delete file
-     * @return {void}
+     * Change notification status to "seen"
      */
     Dropdown.prototype.changeStatus = function(notificationId) {
         return $.ajax({
@@ -30,12 +29,24 @@ NotificationCenter.Notifications.Dropdown = (function ($) {
      * @return {void}
      */
     Dropdown.prototype.handleEvents = function () {
-        $(document).on('click', '.notification-center__item--unseen a', function (e) {
+        $(document).on('click', '.notification-center__item--unseen', function (e) {
+            e.preventDefault();
+
+            var href = $(e.target).closest('a').attr('href');
             var notificationId = $(e.target).closest('.notification-center__item--unseen').attr('data-notification-id');
+
+            this.changeStatus(notificationId);
+
+            // Reduce number of "unseen"
             unseenVal = unseenVal - 1;
             $unseenTarget.attr('data-unseen', unseenVal);
             $(e.target).closest('.notification-center__item--unseen').removeClass('notification-center__item--unseen');
-            this.changeStatus(notificationId);
+
+            // Redirect to target url
+            setTimeout(function(){
+                window.location.replace(href);
+            }, 10);
+
         }.bind(this));
     };
 

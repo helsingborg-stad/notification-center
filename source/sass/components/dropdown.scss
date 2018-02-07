@@ -49,6 +49,10 @@
 	 		display:block;
 	 		color: #000;
 	 		text-decoration: none;
+
+	 		&:focus {
+	 			text-decoration: none !important;
+	 		}
 	 	}
 
 	 	&--unseen {
