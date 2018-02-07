@@ -1,0 +1,17 @@
+// *** Colors
+
+$white: #fff;
+$gray: darken($white,5%);
+$red: #ff4d4d;
+$blue: #69b6d5;
+
+// *** Breakpoints
+
+$screen-md-min:769px;
+$screen-md-max: 960px;
+
+// *** Media Queries
+
+$screen-md: "(min-width: #{$screen-md-min}) and (max-width: #{$screen-md-max})";
+$screen-md-up: "(min-width: #{$screen-md-min})";
+$screen-below-md: "(max-width: #{$screen-md-min})";

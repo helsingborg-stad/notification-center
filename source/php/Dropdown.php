@@ -20,7 +20,7 @@ class Dropdown
             return;
         }
 
-        $toggleIcon     = apply_filters('notification_center/markup/icon', '<i class="pricon pricon-bell toggle-icon"></i>');
+        $toggleIcon     = apply_filters('notification_center/markup/icon', '<i class="pricon pricon-bell notification-toggle__icon"></i>');
         $notifications  = $this->getUserNotifications();
         $unseen         = $this->getUnseen();
 
