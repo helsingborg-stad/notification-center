@@ -10,8 +10,10 @@ class App
         add_action('wp_enqueue_scripts', array($this, 'enqueueScripts'));
 
         new Install();
-        new Notification();
         new Dropdown();
+
+        // Register notification types
+        new Notification\Comment();
     }
 
     /**

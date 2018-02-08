@@ -4,58 +4,16 @@ namespace NotificationCenter;
 
 class Notification
 {
-    protected $entityTypes;
+    public $entityTypes = array();
 
     public function __construct()
     {
-        $this->entityTypes = include(NOTIFICATIONCENTER_PATH . 'source/php/config/EntityTypes.php');
+        $this->entityTypes = \NotificationCenter\Helper\EntityTypes::getEntityTypes();
 
         // Cron event
         add_action('send_notification_email', array($this, 'emailNotifiers'), 10, 1);
 
-        add_action('wp_insert_comment', array($this, 'newComment'), 99, 2);
-    }
-
-    /**
-     * Do notifications on insert comment hook
-     * @param  int $commentId  The new comment's ID
-     * @param  obj $commentObj WP_Comment object
-     * @return void
-     */
-    public function newComment($commentId, $commentObj)
-    {
-        $notifiers = array();
-
-        if ($commentObj->comment_parent > 0) {
-            // Entity: Comment reply
-            $parentComment = get_comment($commentObj->comment_parent);
-            $notifiers[] = (int)$parentComment->user_id;
-            $this->insertNotifications(1, $commentId, $notifiers, $commentObj->user_id);
-
-            // Entity: Post thread contribution.
-            $contributors = get_comments(array(
-                                'parent' => $commentObj->comment_parent,
-                                'author__not_in' => array($commentObj->user_id, (int)$parentComment->user_id)
-                            ));
-            if (!empty($contributors)) {
-                $notifiers = array();
-                foreach ($contributors as $key => &$contributor) {
-                    // Continue if user does not exist
-                    if (!$contributor->user_id) {
-                        continue;
-                    }
-
-                    $notifiers[] = (int) $contributor->user_id;
-                }
-                $this->insertNotifications(2, $commentId, $notifiers, $commentObj->user_id);
-            }
-        }
-
-        // Entity: New post comment
-        $notifier = get_post_field('post_author', $commentObj->comment_post_ID);
-        if (!in_array($notifier, $notifiers)) {
-            $this->insertNotifications(0, $commentId, array((int) $notifier), $commentObj->user_id);
-        }
+        $this->init();
     }
 
     /**
@@ -91,7 +49,7 @@ class Notification
         $notificationId = $wpdb->insert_id;
 
         // Schedule cron event to notify by email
-        wp_schedule_single_event(time() + 20, 'send_notification_email', array($notificationId));
+        wp_schedule_single_event(time() + 10, 'send_notification_email', array($notificationId));
 
         // Insert notification recipients in 'notification' table
         $values = array();
@@ -127,8 +85,8 @@ class Notification
         );
 
         // Build the email message
-        $text = self::buildMessage($notificationData->entity_type, $notificationData->entity_id, $notificationData->sender_id);
-        $url = self::notificationUrl($notificationData->entity_type, $notificationData->entity_id);
+        $text = \NotificationCenter\Helper\Message::buildMessage($notificationData->entity_type, $notificationData->entity_id, $notificationData->sender_id);
+        $url = \NotificationCenter\Helper\Message::notificationUrl($notificationData->entity_type, $notificationData->entity_id);
         $message = sprintf('%s <br><a href="%s">%s %s</a> <br><br>---<br> %s %s',
             $text,
             $url,
@@ -161,91 +119,5 @@ class Notification
                 );
             }
         }
-    }
-
-    /**
-     * Build the notification message
-     * @param  int    $entityType   Entity type ID
-     * @param  int    $entityId     Entity ID
-     * @param  string $senderId     Sender ID
-     * @return string               The notification message
-     */
-    public static function buildMessage($entityType, $entityId, $senderId) : string
-    {
-        $entityTypes = include(NOTIFICATIONCENTER_PATH . 'source/php/config/EntityTypes.php');
-        $senderName = self::getUserName($senderId);
-
-        // Build message depending on entity type, default is Post
-        switch ($entityTypes[$entityType]['type']) {
-            case 'comment':
-                $commentObj = get_comment($entityId);
-                $message = sprintf('<strong>%s</strong> %s <strong>%s</strong>',
-                    $senderName,
-                    $entityTypes[$entityType]['message'],
-                    get_the_title($commentObj->comment_post_ID)
-                );
-
-                break;
-
-            default:
-                $message = sprintf('<strong>%s</strong> %s <strong>%s</strong>',
-                    $senderName,
-                    $entityTypes[$entityType]['message'],
-                    get_the_title($entityId)
-                );
-
-                break;
-        }
-
-        return $message;
-    }
-
-    /**
-     * Get the notification URL
-     * @param  int    $entityType   Entity type ID
-     * @param  int    $entityId     Entity ID
-     * @return string               The notification URL
-     */
-    public static function notificationUrl($entityType, $entityId) : string
-    {
-        $entityTypes = include(NOTIFICATIONCENTER_PATH . 'source/php/config/EntityTypes.php');
-
-        // Get URL depending on entity type, default is Post
-        switch ($entityTypes[$entityType]['type']) {
-            case 'comment':
-                $commentObj = get_comment($entityId);
-                // Get the comment/answer target
-                $url = $commentObj->comment_parent > 0 ? get_the_permalink($commentObj->comment_post_ID) . '#answer-' .  $entityId : get_comment_link($entityId);
-
-                break;
-
-            default:
-                $url = get_the_permalink($entityId);
-
-                break;
-        }
-
-        return $url;
-    }
-
-    /**
-     * Get user name, either full name, first name or display name
-     * @param  int      $userId The user ID
-     * @return string           The user's name.
-     */
-    public static function getUserName($userId)
-    {
-        if (!$userId) {
-            return __('Someone', 'notification-center');
-        }
-
-        $userInfo = get_userdata($userId);
-        if ($userInfo->first_name) {
-            if ($userInfo->last_name) {
-                return $userInfo->first_name . ' ' . $userInfo->last_name;
-            }
-            return $userInfo->first_name;
-        }
-        return $userInfo->display_name;
     }
 }
