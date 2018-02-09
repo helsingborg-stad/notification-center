@@ -14,6 +14,7 @@ class App
 
         // Register notification types
         new Notification\Comment();
+        new Notification\Follow();
     }
 
     /**
@@ -31,6 +32,11 @@ class App
      */
     public function enqueueScripts()
     {
-        wp_enqueue_script('notification-center', NOTIFICATIONCENTER_URL . '/dist/js/notification-center.min.js', '', '', true);
+        wp_enqueue_script('notification-center', NOTIFICATIONCENTER_URL . '/dist/js/notification-center.min.js', 'jquery', false, true);
+        wp_localize_script('notification-center', 'notificationCenter', array(
+            'follow'    => __('Follow', 'notification-center'),
+            'following' => __('Following', 'notification-center'),
+        ));
+        wp_enqueue_script('notification-center');
     }
 }

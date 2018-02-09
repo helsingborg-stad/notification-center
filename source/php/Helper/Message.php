@@ -25,7 +25,6 @@ class Message
                     $entityTypes[$entityType]['message'],
                     get_the_title($commentObj->comment_post_ID)
                 );
-
                 break;
 
             default:
@@ -34,7 +33,6 @@ class Message
                     $entityTypes[$entityType]['message'],
                     get_the_title($entityId)
                 );
-
                 break;
         }
 
