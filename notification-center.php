@@ -33,6 +33,17 @@ $loader->addPrefix('NotificationCenter', NOTIFICATIONCENTER_PATH);
 $loader->addPrefix('NotificationCenter', NOTIFICATIONCENTER_PATH . 'source/php/');
 $loader->register();
 
+// Acf auto import and export
+add_action('plugins_loaded', function () {
+    $acfExportManager = new \AcfExportManager\AcfExportManager();
+    $acfExportManager->setTextdomain('notification-center');
+    $acfExportManager->setExportFolder(NOTIFICATIONCENTER_PATH . 'acf-fields/');
+    $acfExportManager->autoExport(array(
+        'notification_options' => 'group_5a7dc01cb8cd6'
+    ));
+    $acfExportManager->import();
+});
+
 // Start application
 new NotificationCenter\App();
 
