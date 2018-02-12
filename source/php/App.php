@@ -11,6 +11,7 @@ class App
 
         new Install();
         new Dropdown();
+        new Admin\Options();
 
         // Register notification types
         new Notification\Comment();
