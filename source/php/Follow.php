@@ -56,7 +56,7 @@ class Follow
             return;
         }
 
-        update_post_meta($postId, 'post_followers', array($post->post_author => 1));
+        add_post_meta($postId, 'post_followers', array($post->post_author => 1), true);
     }
 
     /**
