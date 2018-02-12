@@ -1,0 +1,126 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Notification Center\n"
+"POT-Creation-Date: 2018-02-12 09:22+0100\n"
+"PO-Revision-Date: 2018-02-12 09:31+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.6\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: notification-center.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: acf-fields/php/notification_options.php:10 source/php/App.php:38
+#: source/php/Notification/Follow.php:81 source/php/Notification/Follow.php:100
+msgid "Follow"
+msgstr "Följ"
+
+#: acf-fields/php/notification_options.php:13
+msgid "Enable follow functionality for selected post types."
+msgstr "Aktivera följ-funktionalitet för utvalda posttyper."
+
+#: source/php/Admin/Options.php:11
+msgctxt "Notification center"
+msgid "Notification center settings"
+msgstr ""
+
+#: source/php/Admin/Options.php:12
+msgctxt "Notification center"
+msgid "Notification center"
+msgstr ""
+
+#: source/php/App.php:39 source/php/Notification/Follow.php:81
+#: source/php/Notification/Follow.php:100
+msgid "Following"
+msgstr "Följer"
+
+#: source/php/Helper/Message.php:78
+msgid "Someone"
+msgstr "Någon"
+
+#: source/php/Notification.php:93
+msgid "Show"
+msgstr "Visa"
+
+#: source/php/Notification.php:95
+msgid "This message was sent via"
+msgstr "Meddelandet skickades via"
+
+#: source/php/Notification.php:113
+#, php-format
+msgid "New notification on %s"
+msgstr "Ny avisering på %s"
+
+#: source/php/config/EntityTypes.php:9 source/php/config/EntityTypes.php:15
+#: source/php/config/EntityTypes.php:21 source/php/config/EntityTypes.php:27
+msgid "Comment"
+msgstr "Kommentar"
+
+#: source/php/config/EntityTypes.php:11
+msgid "commented on your post"
+msgstr "kommenterade din sida"
+
+#: source/php/config/EntityTypes.php:17
+msgid "replied to your comment on"
+msgstr "svarade på din kommentar på"
+
+#: source/php/config/EntityTypes.php:23
+msgid "also replied to a comment on"
+msgstr "svarade också på en kommentar på"
+
+#: source/php/config/EntityTypes.php:29
+msgid "commented on a post you follow"
+msgstr "kommenterade en sida som du följer"
+
+#: source/php/config/EntityTypes.php:33
+msgid "Update"
+msgstr "Uppdatering"
+
+#: source/php/config/EntityTypes.php:35
+msgid "updated a post you follow"
+msgstr "uppdaterade en sida du följer"
+
+#: templates/dropdown.php:6
+msgid "Notifications"
+msgstr "Aviseringar"
+
+#: templates/dropdown.php:17
+msgid "sedan"
+msgstr ""
+
+#: templates/dropdown.php:26
+msgid "You don't have any notifications"
+msgstr "Du har inga aviseringar"
+
+#. Plugin Name of the plugin/theme
+msgid "Notification Center"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "(#plugin_url#)"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Plugin to give logged in users notifications when others react on comments "
+"etc."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Jonatan Hanson"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "(#plugin_author_url#)"
+msgstr ""
