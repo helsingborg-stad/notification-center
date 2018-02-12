@@ -11,11 +11,12 @@ class App
 
         new Install();
         new Dropdown();
+        new Follow();
         new Admin\Options();
 
         // Register notification types
         new Notification\Comment();
-        new Notification\Follow();
+        new Notification\Update();
     }
 
     /**

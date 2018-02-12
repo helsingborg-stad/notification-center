@@ -1,0 +1,44 @@
+[{
+    "key": "group_5a7dc01cb8cd6",
+    "title": "Notification center",
+    "fields": [
+        {
+            "key": "field_5a7dc17460fff",
+            "label": "Follow",
+            "name": "notification_post_types",
+            "type": "posttype_select",
+            "instructions": "Enable follow functionality for selected post types.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "allow_null": 0,
+            "multiple": 1,
+            "placeholder": "",
+            "disabled": 0,
+            "readonly": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "notification-center-options"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": ""
+}]
+
