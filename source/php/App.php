@@ -11,6 +11,7 @@ class App
 
         new Install();
         new Dropdown();
+        new Summary();
         new Follow();
         new Admin\Options();
 

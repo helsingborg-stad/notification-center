@@ -45,7 +45,7 @@ class Follow
     }
 
     /**
-     * Add follower metadata when a post is saved
+     * Add follower metadata when a post is created
      * @param int $postId The post ID.
      * @param post $post The post object.
      * @param bool $update Whether this is an existing post being updated or not.

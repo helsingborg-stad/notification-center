@@ -47,4 +47,7 @@ add_action('plugins_loaded', function () {
 // Start application
 new NotificationCenter\App();
 
-register_activation_hook( __FILE__, 'NotificationCenter\Install::createTables');
+// Activation & deactivation hooks
+register_activation_hook(plugin_basename(__FILE__), '\NotificationCenter\Summary::addCronJob');
+register_deactivation_hook(plugin_basename(__FILE__), '\NotificationCenter\Summary::removeCronJob');
+register_activation_hook(plugin_basename(__FILE__), 'NotificationCenter\Install::createTables');

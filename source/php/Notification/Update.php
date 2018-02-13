@@ -20,7 +20,7 @@ class Update extends \NotificationCenter\Notification
         if ((defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) || wp_is_post_revision($postId)) {
             return;
         }
-        // Entity #4 : New post update
+        /** Entity #4 : New post update **/
         $followers = get_post_meta($postId, 'post_followers', true);
         $followers = array_keys(array_filter($followers));
         if (is_array($followers) && !empty($followers)) {

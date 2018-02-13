@@ -14,7 +14,7 @@
 						<?php echo \NotificationCenter\Helper\Message::buildMessage($notification->entity_type, $notification->entity_id, $notification->sender_id); ?>
 					</div>
 					<div class="notification-center__time">
-						<i class="pricon pricon-clock"></i> <?php echo human_time_diff(strtotime($notification->created), current_time('timestamp')) . ' ' . __('sedan', 'notification-center'); ?>
+						<i class="pricon pricon-clock"></i> <?php echo human_time_diff(strtotime($notification->created), current_time('timestamp')) . ' ' . __('ago', 'notification-center'); ?>
 					</div>
 				</a>
 			</li>
