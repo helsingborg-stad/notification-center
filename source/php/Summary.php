@@ -4,12 +4,8 @@ namespace NotificationCenter;
 
 class Summary
 {
-    public $entityTypes = array();
-
     public function __construct()
     {
-        $this->entityTypes = \NotificationCenter\Helper\EntityTypes::getEntityTypes();
-
         /* Register cron event */
         add_action('email_notification_summary', array($this, 'emailDailySummary'));
     }
@@ -36,6 +32,7 @@ class Summary
         }
 
         global $wpdb;
+        $entityTypes = \NotificationCenter\Helper\EntityTypes::getEntityTypes();
 
         // Get notifiers
         $notifiers = $wpdb->get_results("
@@ -46,7 +43,7 @@ class Summary
             JOIN {$wpdb->prefix}notification_objects no
                 ON no.ID = n.notification_object_id
             WHERE no.created > NOW() - INTERVAL 24 HOUR
-            AND n.status = 0
+                AND n.status = 0
             GROUP BY u.ID
         ");
 
@@ -58,32 +55,20 @@ class Summary
                 LEFT JOIN {$wpdb->prefix}notification_objects no
                     ON n.notification_object_id = no.ID
                 WHERE n.notifier_id = {$notifier->ID}
-                AND n.status = 0
-                AND no.created > NOW() - INTERVAL 24 HOUR"
-            );
+                    AND n.status = 0
+                    AND no.created > NOW() - INTERVAL 24 HOUR
+                ORDER BY no.created DESC
+            ");
 
-            // Build the email message
-            $message = '';
-            foreach ($notifications as $key => $notification) {
-                $text = \NotificationCenter\Helper\Message::buildMessage($notification->entity_type, $notification->entity_id, $notification->sender_id);
-                $url = \NotificationCenter\Helper\Message::notificationUrl($notification->entity_type, $notification->entity_id);
-                $message .= sprintf('%s <br><a href="%s">%s %s</a><br><br>',
-                    $text,
-                    $url,
-                    __('Show', 'notification-center'),
-                    strtolower($this->entityTypes[$notification->entity_type]['label'])
-                );
-            }
-
-            $message .= sprintf('---<br> %s %s',
-                __('This message was sent via', 'notification-center'),
-                get_site_url()
-            );
+            ob_start();
+            include NOTIFICATIONCENTER_TEMPLATE_PATH . 'email-summary.php';
+            $emailTemplate = ob_get_clean();
+            $emailTemplate = '<html><body style="background:#fff; padding: 10px; font-family: Helvetica, Arial, Verdana, sans-serif;">' . $emailTemplate . '</body></html>';
 
             $mail = wp_mail(
                 $notifier->user_email,
-                sprintf(__('Summary of notifications on %s', 'notification-center'), get_bloginfo()),
-                $message,
+                __('Notification summary', 'notification-center'),
+                $emailTemplate,
                 array(
                     'From: ' . get_bloginfo() . ' <' . get_option('admin_email') . '>',
                     'Content-Type: text/html; charset=UTF-8'
