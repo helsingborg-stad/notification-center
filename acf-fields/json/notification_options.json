@@ -3,24 +3,23 @@
     "title": "Notification center",
     "fields": [
         {
-            "key": "field_5a7dc17460fff",
-            "label": "Follow",
-            "name": "notification_post_types",
-            "type": "posttype_select",
-            "instructions": "Enable follow functionality for selected post types.",
+            "key": "field_5a82ec34ea342",
+            "label": "Daily email summary",
+            "name": "notification_email_summary",
+            "type": "true_false",
+            "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "50",
+                "width": "",
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
-            "allow_null": 0,
-            "multiple": 1,
-            "placeholder": "",
-            "disabled": 0,
-            "readonly": 0
+            "message": "Send daily email summary",
+            "default_value": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
         }
     ],
     "location": [
