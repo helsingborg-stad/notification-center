@@ -41,19 +41,20 @@ class Comment extends \NotificationCenter\Notification
                                 'author__not_in' => array(0, $commentObj->user_id, (int)$parentComment->user_id)
                             ));
             if (!empty($contributors)) {
-                $notifiers = array();
-                foreach ($contributors as $key => &$contributor) {
+            $contributorNotifiers = array();
+                foreach ($contributors as $key => $contributor) {
                     // Add notifer if user exists in follower array and is set to true
                     if (empty($followers)
                         || (is_array($followers)
                         && array_key_exists($contributor->user_id, $followers)
                         && $followers[$contributor->user_id])) {
 
-                        $notifiers[] = (int)$contributor->user_id;
+                        $contributorNotifiers[] = (int)$contributor->user_id;
                     }
                 }
 
-                $this->insertNotifications(2, $commentId, $notifiers, $commentObj->user_id);
+                $this->insertNotifications(2, $commentId, $contributorNotifiers, $commentObj->user_id);
+                $notifiers = array_merge($notifiers, $contributorNotifiers);
             }
         }
 
@@ -73,7 +74,8 @@ class Comment extends \NotificationCenter\Notification
         // Remove 'unfollowed' and already notified users
         $followers = array_keys(array_filter($followers));
         if (is_array($followers) && !empty($followers)) {
-            $notifiers = array_diff_key($followers, $notifiers);
+            $notifiers = array_diff($followers, $notifiers);
+
             $this->insertNotifications(3, $commentId, $notifiers, $commentObj->user_id);
         }
     }
