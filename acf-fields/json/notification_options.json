@@ -20,6 +20,113 @@
             "ui": 0,
             "ui_on_text": "",
             "ui_off_text": ""
+        },
+        {
+            "key": "field_5a84481599e44",
+            "label": "Email subject",
+            "name": "notification_email_subject",
+            "type": "text",
+            "instructions": "Leave empty to use default.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5a82ec34ea342",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5a84482199e45",
+            "label": "Heading",
+            "name": "notification_email_heading",
+            "type": "text",
+            "instructions": "Heading used in email. Leave empty to use default.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5a82ec34ea342",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5a844c1e22d55",
+            "label": "Sender name",
+            "name": "notification_sender_name",
+            "type": "text",
+            "instructions": "Leave empty to use default.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5a82ec34ea342",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5a84482c99e46",
+            "label": "Sender email address",
+            "name": "notification_sender_email",
+            "type": "email",
+            "instructions": "Leave empty to use default.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5a82ec34ea342",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
         }
     ],
     "location": [

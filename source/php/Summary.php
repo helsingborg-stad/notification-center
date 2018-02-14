@@ -60,18 +60,23 @@ class Summary
             ");
 
             $data = array();
+            $data['heading'] = (!empty(get_field('notification_email_heading', 'option'))) ? get_field('notification_email_heading', 'option') : __('Your latest notifications', 'notification-center');
             $data['entityTypes']    = \NotificationCenter\Helper\EntityTypes::getEntityTypes();
             $data['notifications']  = $notifications;
 
             $emailTemplate = Helper\Display::blade('email-summary', $data);
             $emailTemplate = '<html><body style="background:#fff; padding: 10px; font-family: Helvetica, Arial, Verdana, sans-serif;">' . $emailTemplate . '</body></html>';
 
+            $senderEmail = (!empty(get_field('notification_sender_email', 'option'))) ? get_field('notification_sender_email', 'option') : get_option('admin_email');
+            $senderName = (!empty(get_field('notification_sender_name', 'option'))) ? get_field('notification_sender_name', 'option') : get_bloginfo();
+            $subject = (!empty(get_field('notification_email_subject', 'option'))) ? get_field('notification_email_subject', 'option') : __('New notifications', 'notification-center');
+
             $mail = wp_mail(
                 $notifier->user_email,
-                __('Notification summary', 'notification-center'),
+                $subject,
                 $emailTemplate,
                 array(
-                    'From: ' . get_bloginfo() . ' <' . get_option('admin_email') . '>',
+                    'From: ' . $senderName . ' <' . $senderEmail . '>',
                     'Content-Type: text/html; charset=UTF-8'
                 )
             );

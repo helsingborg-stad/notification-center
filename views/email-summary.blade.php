@@ -1,5 +1,4 @@
-<h2><?php _e('Your latest notifications', 'customer-feedback'); ?></h2>
-<h3>Helsingborgs stads intranät</h3>
+<h2>{{ $heading }}</h2>
 <ul style="list-style-type:none;padding:0;">
     @foreach ($notifications as $notification)
         <li style="padding:15px;background:#e6e6e6;border-radius:3px;margin-bottom:15px;">
