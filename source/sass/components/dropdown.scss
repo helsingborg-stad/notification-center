@@ -32,6 +32,11 @@
 		overflow-y: scroll;
 	}
 
+	&__loading {
+		border-top: 1px solid darken($white,10%);
+		padding: 10px;
+	}
+
 	& &__item {
 		height: auto;
 	 	border-top: 1px solid darken($white,10%);

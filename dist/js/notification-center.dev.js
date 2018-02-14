@@ -5,6 +5,7 @@ NotificationCenter.Notifications.Dropdown = (function ($) {
 
     var unseenVal = $('.notification-toggle').attr('data-unseen');
     var $unseenTarget = $('.notification-toggle');
+    var offset = 0;
 
     function Dropdown() {
         this.handleEvents();
@@ -25,10 +26,51 @@ NotificationCenter.Notifications.Dropdown = (function ($) {
     };
 
     /**
+     * Load more notifications
+     */
+    Dropdown.prototype.loadMore = function($target) {
+        offset = $('.notification-center__item', $target).length;
+
+        return $.ajax({
+            url: ajaxurl,
+            type: 'post',
+            data: {
+                action : 'load_more',
+                offset : offset
+            },
+            beforeSend: function() {
+                $target.append('<li class="notification-center__loading loading-wrapper"><div class="loading"><div></div><div></div><div></div><div></div></div></li>');
+            },
+            complete: function() {
+                $('.notification-center__loading', $target).remove();
+            },
+            success: function(response) {
+                if (response.length === 0) {
+                    offset = null;
+                } else {
+                    $target.append(response);
+                }
+            },
+            error: function(error) {
+                offset = null;
+            },
+        });
+    };
+
+    /**
      * Handle events
      * @return {void}
      */
     Dropdown.prototype.handleEvents = function () {
+        $('.notification-center__list').bind('scroll', function(e) {
+            $target = $(e.currentTarget);
+            if ($target.scrollTop() + $target.innerHeight() >= $target[0].scrollHeight
+                && $target.find('.notification-center__loading').length === 0
+                && offset !== null) {
+                this.loadMore($target);
+            }
+        }.bind(this));
+
         $(document).on('click', '.notification-center__item--unseen', function (e) {
             e.preventDefault();
 

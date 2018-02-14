@@ -23,6 +23,9 @@
   .notification-center__list {
     max-height: 300px;
     overflow-y: scroll; }
+  .notification-center__loading {
+    border-top: 1px solid #e6e6e6;
+    padding: 10px; }
   .notification-center .notification-center__item {
     height: auto;
     border-top: 1px solid #e6e6e6; }

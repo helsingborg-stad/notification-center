@@ -7,24 +7,27 @@ class Dropdown
     public function __construct()
     {
         add_action('init', array($this, 'registerShortcodes'));
-        add_action('wp_ajax_change_status', array($this,'changeStatus'));
+        add_action('wp_ajax_change_status', array($this, 'changeStatus'));
+        add_action('wp_ajax_load_more', array($this, 'loadMore'));
     }
 
     public function registerShortcodes()
     {
-       add_shortcode('notification-center', array($this, 'notificationCenter'));
+        add_shortcode('notification-center', array($this, 'notificationCenter'));
     }
 
-    public function notificationCenter() {
+    public function notificationCenter()
+    {
         if (!is_user_logged_in()) {
             return;
         }
 
-        $toggleIcon     = apply_filters('notification_center/markup/icon', '<i class="pricon pricon-bell notification-toggle__icon"></i>');
-        $notifications  = $this->getUserNotifications();
-        $unseen         = $this->getUnseen();
+        $data = array();
+        $data['toggleIcon']     = apply_filters('notification_center/markup/icon', '<i class="pricon pricon-bell notification-toggle__icon"></i>');
+        $data['notifications']  = $this->getUserNotifications();
+        $data['unseen']         = $this->getUnseen();
 
-        include NOTIFICATIONCENTER_TEMPLATE_PATH . 'dropdown.php';
+        echo Helper\Display::blade('dropdown', $data);
     }
 
     /**
@@ -42,8 +45,8 @@ class Dropdown
             LEFT JOIN {$wpdb->prefix}notification_objects no
                 ON n.notification_object_id = no.ID
             WHERE n.notifier_id = {$user->ID}
-            AND n.status = 0
-            AND no.created > NOW() - INTERVAL 30 DAY"
+                AND n.status = 0
+                AND no.created > NOW() - INTERVAL 30 DAY"
         );
 
         return $unseen;
@@ -54,7 +57,6 @@ class Dropdown
         global $wpdb;
         $user = wp_get_current_user();
         $userId = $userId ? $userId : $user->ID;
-        $maxOffset = (int) $offset + 7;
 
         $notifications = $wpdb->get_results("
             SELECT *
@@ -62,11 +64,26 @@ class Dropdown
             INNER JOIN {$wpdb->prefix}notification_objects no
                 ON n.notification_object_id = no.ID
             WHERE n.notifier_id = {$userId}
+                AND no.created > NOW() - INTERVAL 30 DAY
             ORDER BY no.created DESC
-            LIMIT {$offset}, {$maxOffset};"
+            LIMIT $offset, 15"
         );
 
         return $notifications;
+    }
+
+    public function loadMore()
+    {
+        if (!isset($_POST['offset'])) {
+            wp_send_json_error('Missing offset');
+        }
+
+        $offset = (int)$_POST['offset'];
+        $notifications = $this->getUserNotifications(null, $offset);
+        $markup = (!empty($notifications)) ? Helper\Display::blade('partials.dropdown-items', array('notifications' => $notifications)) : '';
+
+        echo($markup);
+        wp_die();
     }
 
     public function changeStatus()
