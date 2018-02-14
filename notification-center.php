@@ -20,7 +20,8 @@ if (! defined('WPINC')) {
 
 define('NOTIFICATIONCENTER_PATH', plugin_dir_path(__FILE__));
 define('NOTIFICATIONCENTER_URL', plugins_url('', __FILE__));
-define('NOTIFICATIONCENTER_TEMPLATE_PATH', NOTIFICATIONCENTER_PATH . 'templates/');
+define('NOTIFICATIONCENTER_VIEW_PATH', NOTIFICATIONCENTER_PATH . 'views/');
+define('NOTIFICATIONCENTER_CACHE_DIR', trailingslashit(wp_upload_dir()['basedir']) . 'cache/blade-cache/');
 
 load_plugin_textdomain('notification-center', false, plugin_basename(dirname(__FILE__)) . '/languages');
 
