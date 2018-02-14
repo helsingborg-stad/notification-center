@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Notification Center\n"
-"POT-Creation-Date: 2018-02-12 09:22+0100\n"
-"PO-Revision-Date: 2018-02-12 09:31+0100\n"
+"POT-Creation-Date: 2018-02-13 08:24+0100\n"
+"PO-Revision-Date: 2018-02-13 08:25+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv\n"
@@ -16,13 +16,13 @@ msgstr ""
 "X-Poedit-WPHeader: notification-center.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.js\n"
 
-#: acf-fields/php/notification_options.php:10 source/php/App.php:38
-#: source/php/Notification/Follow.php:81 source/php/Notification/Follow.php:100
+#: acf-fields/php/notification_options.php:10 source/php/App.php:39
+#: source/php/Follow.php:76 source/php/Follow.php:95
 msgid "Follow"
 msgstr "Följ"
 
@@ -40,8 +40,7 @@ msgctxt "Notification center"
 msgid "Notification center"
 msgstr ""
 
-#: source/php/App.php:39 source/php/Notification/Follow.php:81
-#: source/php/Notification/Follow.php:100
+#: source/php/App.php:40 source/php/Follow.php:76 source/php/Follow.php:95
 msgid "Following"
 msgstr "Följer"
 
@@ -96,8 +95,8 @@ msgid "Notifications"
 msgstr "Aviseringar"
 
 #: templates/dropdown.php:17
-msgid "sedan"
-msgstr ""
+msgid "ago"
+msgstr "sedan"
 
 #: templates/dropdown.php:26
 msgid "You don't have any notifications"
