@@ -32,7 +32,6 @@ class Summary
         }
 
         global $wpdb;
-        $entityTypes = \NotificationCenter\Helper\EntityTypes::getEntityTypes();
 
         // Get notifiers
         $notifiers = $wpdb->get_results("
@@ -60,9 +59,11 @@ class Summary
                 ORDER BY no.created DESC
             ");
 
-            ob_start();
-            include NOTIFICATIONCENTER_TEMPLATE_PATH . 'email-summary.php';
-            $emailTemplate = ob_get_clean();
+            $data = array();
+            $data['entityTypes']    = \NotificationCenter\Helper\EntityTypes::getEntityTypes();
+            $data['notifications']  = $notifications;
+
+            $emailTemplate = Helper\Display::blade('email-summary', $data);
             $emailTemplate = '<html><body style="background:#fff; padding: 10px; font-family: Helvetica, Arial, Verdana, sans-serif;">' . $emailTemplate . '</body></html>';
 
             $mail = wp_mail(
