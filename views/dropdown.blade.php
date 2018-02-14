@@ -5,7 +5,14 @@
 	<li class="notification-center__header">
 		<?php _e('Notifications', 'notification-center'); ?>
 	</li>
-    <ul class="notification-center__list">
-		@each('partials.dropdown-item', $notifications, 'notification', 'partials.dropdown-empty')
-    </ul>
+	@if(!empty($notifications))
+		<ul class="notification-center__list">
+			@include('partials.dropdown-items')
+		</ul>
+	@else
+		<li class="notification-center__empty">
+			<i class="pricon pricon-lg pricon-bell"></i>
+			<p><?php _e('You don\'t have any notifications', 'notification-center'); ?></p>
+		</li>
+	@endif
 </ul>

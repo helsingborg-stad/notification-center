@@ -1,3 +1,4 @@
+@foreach($notifications as $notification)
 <li class="notification-center__item {{ !$notification->status ? 'notification-center__item--unseen' : '' }}"  data-notification-id="{{ $notification->ID }}">
 	<a href="{{ \NotificationCenter\Helper\Message::notificationUrl($notification->entity_type, $notification->entity_id) }}">
 		<div class="notification-center__message">
@@ -8,3 +9,4 @@
 		</div>
 	</a>
 </li>
+@endforeach
