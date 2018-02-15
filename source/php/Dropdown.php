@@ -32,6 +32,7 @@ class Dropdown
         $data['toggleIcon']     = apply_filters('notification_center/markup/icon', '<i class="pricon pricon-bell notification-toggle__icon"></i>');
         $data['notifications']  = $this->getUserNotifications();
         $data['unseen']         = $this->getUnseen();
+        $data['entityTypes']    = \NotificationCenter\Helper\EntityTypes::getEntityTypes();
 
         echo Helper\Display::blade('dropdown', $data);
     }
@@ -95,7 +96,11 @@ class Dropdown
 
         $offset = (int)$_POST['offset'];
         $notifications = $this->getUserNotifications(null, $offset);
-        $markup = (!empty($notifications)) ? Helper\Display::blade('partials.dropdown-items', array('notifications' => $notifications)) : '';
+        $data = array(
+                'notifications' => $notifications,
+                'entityTypes' => \NotificationCenter\Helper\EntityTypes::getEntityTypes()
+                );
+        $markup = (!empty($notifications)) ? Helper\Display::blade('partials.dropdown-items', $data) : '';
 
         echo($markup);
         wp_die();

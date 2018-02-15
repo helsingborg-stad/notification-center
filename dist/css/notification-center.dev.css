@@ -1,7 +1,7 @@
 .notification-center {
   padding: 0px;
   margin-top: 15px !important;
-  min-width: 457px;
+  width: 457px;
   left: auto;
   right: -12px;
   top: 100%;
@@ -11,7 +11,7 @@
       left: 0;
       right: 0;
       margin-top: 0 !important;
-      min-width: 0; }
+      width: auto; }
       .notification-center::before, .notification-center::after {
         display: none !important; } }
   .notification-center__header {
@@ -40,6 +40,16 @@
       text-decoration: none; }
       .notification-center .notification-center__item a:focus {
         text-decoration: none !important; }
+    .notification-center .notification-center__item__wrapper {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-align: center;
+          align-items: center; }
+    .notification-center .notification-center__item__entity {
+      padding-right: 13px; }
+      .notification-center .notification-center__item__entity .pricon {
+        font-size: 17px;
+        background-color: #bfbfbf; }
     .notification-center .notification-center__item--unseen {
       background-color: #f2f2f2; }
       .notification-center .notification-center__item--unseen .notification-center__message::before {

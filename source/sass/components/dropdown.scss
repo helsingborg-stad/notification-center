@@ -1,7 +1,7 @@
 .notification-center {
 	padding: 0px;
 	margin-top: 15px !important;
-    min-width: 457px;
+    width: 457px;
     left: auto;
     right: -12px;
     top: 100%;
@@ -11,7 +11,7 @@
         left: 0;
         right: 0;
         margin-top: 0 !important;
-        min-width: 0;
+        width: auto;
 
         &::before,
         &::after {
@@ -58,6 +58,20 @@
 	 		&:focus {
 	 			text-decoration: none !important;
 	 		}
+	 	}
+
+	 	&__wrapper {
+	 		display: flex;
+	 		align-items: center;
+	 	}
+
+	 	&__entity {
+			padding-right: 13px;
+
+			.pricon {
+				font-size: 17px;
+				background-color: darken($gray,20%);
+			}
 	 	}
 
 	 	&--unseen {
