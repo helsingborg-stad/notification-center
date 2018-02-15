@@ -47,6 +47,12 @@ class Summary
         ");
 
         foreach ($notifiers as $key => $notifier) {
+            // Skip if user have disabled emails
+            $disabled = get_user_meta($notifier->ID, 'disable_notification_email', true);
+            if ($disabled == true) {
+                continue;
+            }
+
             // Get users notifications
             $notifications = $wpdb->get_results("
                 SELECT *
