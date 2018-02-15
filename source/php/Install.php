@@ -33,6 +33,7 @@ class Install
           sender_id bigint(20) UNSIGNED,
           entity_type bigint(20) UNSIGNED NOT NULL,
           entity_id bigint(20) UNSIGNED NOT NULL,
+          post_id bigint(20) UNSIGNED,
           created datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
           PRIMARY KEY (ID),
           INDEX fk_notification_sender_id_idx (sender_id ASC),

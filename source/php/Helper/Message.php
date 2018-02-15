@@ -9,28 +9,30 @@ class Message
      * @param  int    $entityType   Entity type ID
      * @param  int    $entityId     Entity ID
      * @param  string $senderId     Sender ID
+     * @param  string $count        Number of notifications
      * @return string               The notification message
      */
-    public static function buildMessage($entityType, $entityId, $senderId) : string
+    public static function buildMessage($entityType, $entityId, $senderId, $count) : string
     {
         $entityTypes = \NotificationCenter\Helper\EntityTypes::getEntityTypes();
         $senderName = self::getUserName($senderId);
+        $isSingular = (int)$count == 1 ? true : false;
 
         // Build message depending on entity type, default is Post
         switch ($entityTypes[$entityType]['type']) {
             case 'comment':
                 $commentObj = get_comment($entityId);
                 $message = sprintf('<strong>%s</strong> %s <strong>%s</strong>',
-                    $senderName,
-                    $entityTypes[$entityType]['message'],
+                    $isSingular ? $senderName : $count,
+                    $isSingular ? $entityTypes[$entityType]['message_singular'] : $entityTypes[$entityType]['message_plural'],
                     get_the_title($commentObj->comment_post_ID)
                 );
                 break;
 
             default:
                 $message = sprintf('<strong>%s</strong> %s <strong>%s</strong>',
-                    $senderName,
-                    $entityTypes[$entityType]['message'],
+                    $isSingular ? $senderName : $count,
+                    $isSingular ? $entityTypes[$entityType]['message_singular'] : $entityTypes[$entityType]['message_plural'],
                     get_the_title($entityId)
                 );
                 break;

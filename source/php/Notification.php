@@ -15,9 +15,10 @@ class Notification
      * @param  int      $entityId   Entity ID, eg. Post or Comment ID
      * @param  array    $notifier   List of notifier IDs
      * @param  int      $sender     Sender ID
+     * @param  int|null $postId     Post ID or NULL
      * @return void
      */
-    public function insertNotifications(int $entityType, int $entityId, $notifiers = array(), int $sender)
+    public function insertNotifications(int $entityType, int $entityId, $notifiers = array(), int $sender, $postId = null)
     {
         global $wpdb;
 
@@ -35,6 +36,7 @@ class Notification
                 'sender_id' => $sender != 0 ? $sender : null,
                 'entity_type' => $entityType,
                 'entity_id' => $entityId,
+                'post_id' => $postId,
                 'created' => current_time('mysql')
             )
         );

@@ -32,7 +32,7 @@ class Update extends \NotificationCenter\Notification
         $followers = array_keys(array_filter($followers));
         if (is_array($followers) && !empty($followers)) {
             $user = wp_get_current_user();
-            $this->insertNotifications(4, $postId, $followers, $user->ID);
+            $this->insertNotifications(4, $postId, $followers, $user->ID, $postId);
         }
     }
 }

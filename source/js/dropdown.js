@@ -14,13 +14,13 @@ NotificationCenter.Notifications.Dropdown = (function ($) {
     /**
      * Change notification status to "seen"
      */
-    Dropdown.prototype.changeStatus = function(notificationId) {
+    Dropdown.prototype.changeStatus = function(notificationIds) {
         return $.ajax({
             url: ajaxurl,
             type: 'post',
             data: {
                 action : 'change_status',
-                notificationId : notificationId
+                notificationIds : notificationIds
             }
         });
     };

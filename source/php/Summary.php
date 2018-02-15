@@ -55,13 +55,18 @@ class Summary
 
             // Get users notifications
             $notifications = $wpdb->get_results("
-                SELECT *
+                SELECT *, COUNT(*) count
                 FROM {$wpdb->prefix}notifications n
-                LEFT JOIN {$wpdb->prefix}notification_objects no
+                INNER JOIN {$wpdb->prefix}notification_objects no
                     ON n.notification_object_id = no.ID
                 WHERE n.notifier_id = {$notifier->ID}
                     AND n.status = 0
-                    AND no.created > NOW() - INTERVAL 24 HOUR
+                    AND no.created > NOW() - INTERVAL 30 DAY
+                GROUP BY CASE
+                            WHEN no.post_id IS NOT NULL
+                            THEN 1
+                            ELSE 0
+                        END, no.post_id, no.entity_type, n.status
                 ORDER BY no.created DESC
             ");
 
