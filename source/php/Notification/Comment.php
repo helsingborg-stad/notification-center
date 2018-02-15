@@ -17,6 +17,11 @@ class Comment extends \NotificationCenter\Notification
      */
     public function newComment($commentId, $commentObj)
     {
+        // Bail if notifications is not activated
+        if (! \NotificationCenter\App::isActivated(get_post_type($commentObj->comment_post_ID))) {
+            return;
+        }
+
         // Gather notifiers to avoid adding multiple notifications
         $notifiers = array();
         // Get list of post followers

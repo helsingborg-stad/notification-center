@@ -52,7 +52,8 @@ class Follow
      */
     public function addFollowerMeta($postId, $post, $update)
     {
-        if ($update) {
+        // Bail if notifications is not activated or is update
+        if ($update || !\NotificationCenter\App::isActivated(get_post_type($postId))) {
             return;
         }
 
@@ -66,7 +67,8 @@ class Follow
      */
     public function postFollowButton($post)
     {
-        if (!is_user_logged_in()) {
+        // Bail if user is not logged in or notifications is not activated
+        if (!is_user_logged_in() || !\NotificationCenter\App::isActivated(get_post_type($post))) {
             return;
         }
 
@@ -84,11 +86,13 @@ class Follow
      */
     public function pageFollowButton($items)
     {
-        if (!is_user_logged_in()) {
-            return;
+        global $post;
+
+        // Bail if user is not logged in or notifications is not activated
+        if (!is_user_logged_in() || !\NotificationCenter\App::isActivated(get_post_type($post))) {
+            return $items;
         }
 
-        global $post;
         $user = wp_get_current_user();
         $followers = get_post_meta($post->ID, 'post_followers', true);
         $isFollowing = (is_array($followers) && in_array($user->ID, array_keys(array_filter($followers)))) ? 1 : 0;

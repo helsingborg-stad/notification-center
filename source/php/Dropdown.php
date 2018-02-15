@@ -11,11 +11,17 @@ class Dropdown
         add_action('wp_ajax_load_more', array($this, 'loadMore'));
     }
 
+    /**
+     * Register shortcodes
+     */
     public function registerShortcodes()
     {
         add_shortcode('notification-center', array($this, 'notificationCenter'));
     }
 
+    /**
+     * Renders the dropdown with notifications
+     */
     public function notificationCenter()
     {
         if (!is_user_logged_in()) {
@@ -52,6 +58,12 @@ class Dropdown
         return $unseen;
     }
 
+    /**
+     * Get users notifications
+     * @param  integer|null  $userId Users id
+     * @param  integer       $offset Row offset
+     * @return array         List with notifications
+     */
     public function getUserNotifications($userId = null, $offset = 0)
     {
         global $wpdb;
@@ -72,6 +84,9 @@ class Dropdown
         return $notifications;
     }
 
+    /**
+     * Returns additional user notifications
+     */
     public function loadMore()
     {
         if (!isset($_POST['offset'])) {
@@ -86,6 +101,9 @@ class Dropdown
         wp_die();
     }
 
+    /**
+     * Change notification status to 'seen'
+     */
     public function changeStatus()
     {
         ignore_user_abort(true);

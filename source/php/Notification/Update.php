@@ -6,7 +6,7 @@ class Update extends \NotificationCenter\Notification
 {
     public function init()
     {
-        add_action('save_post', array($this, 'updatePostNotification'));
+        add_action('save_post', array($this, 'updatePostNotification'), 10, 3);
     }
 
     /**
@@ -14,8 +14,15 @@ class Update extends \NotificationCenter\Notification
      * @param  int $postId Post ID
      * @return void
      */
-    public function updatePostNotification($postId)
+    public function updatePostNotification($postId, $post, $update)
     {
+        // Bail if notifications: is not activated, autosave function, revision
+        if (! \NotificationCenter\App::isActivated(get_post_type($postId))
+            || (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
+            || wp_is_post_revision($postId)) {
+            return;
+        }
+
         // Deny for autosave function and revision
         if ((defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) || wp_is_post_revision($postId)) {
             return;

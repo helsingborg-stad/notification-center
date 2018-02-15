@@ -42,4 +42,18 @@ class App
         ));
         wp_enqueue_script('notification-center');
     }
+
+    /**
+     * Checks if notifications is activated for a post type
+     * @return boolean
+     */
+    public static function isActivated($postType) : bool
+    {
+        if (empty($postType)) {
+            return false;
+        }
+
+        $postTypes = apply_filters('notification_center/activated_posttypes', get_post_types(array('public' => true)));
+        return in_array($postType, $postTypes);
+    }
 }
