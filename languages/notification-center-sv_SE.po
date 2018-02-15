@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Notification Center\n"
-"POT-Creation-Date: 2018-02-15 14:17+0100\n"
-"PO-Revision-Date: 2018-02-15 14:24+0100\n"
+"POT-Creation-Date: 2018-02-15 20:34+0100\n"
+"PO-Revision-Date: 2018-02-15 20:34+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv\n"
@@ -79,36 +79,56 @@ msgstr "Följ"
 msgid "Following"
 msgstr "Följer"
 
-#: source/php/Config/EntityTypes.php:9 source/php/Config/EntityTypes.php:16
-#: source/php/Config/EntityTypes.php:23 source/php/Config/EntityTypes.php:30
+#: source/php/Config/EntityTypes.php:9 source/php/Config/EntityTypes.php:17
+#: source/php/Config/EntityTypes.php:25 source/php/Config/EntityTypes.php:33
 msgid "Comment"
 msgstr "Kommentar"
 
-#: source/php/Config/EntityTypes.php:11
-msgid "commented on your post"
+#: source/php/Config/EntityTypes.php:12
+msgid "commented on your page"
 msgstr "kommenterade din sida"
 
-#: source/php/Config/EntityTypes.php:18
+#: source/php/Config/EntityTypes.php:13
+msgid "new comments on your page"
+msgstr "nya kommentarer på din sida"
+
+#: source/php/Config/EntityTypes.php:20
 msgid "replied to your comment on"
 msgstr "svarade på din kommentar på"
 
-#: source/php/Config/EntityTypes.php:25
+#: source/php/Config/EntityTypes.php:21
+msgid "new comment replies on"
+msgstr "nya svar på din kommentar på"
+
+#: source/php/Config/EntityTypes.php:28
 msgid "also replied to a comment on"
 msgstr "svarade också på en kommentar på"
 
-#: source/php/Config/EntityTypes.php:32
-msgid "commented on a post you follow"
+#: source/php/Config/EntityTypes.php:29
+msgid "new comment thread contributions on"
+msgstr "nya svar i kommentarstråden på"
+
+#: source/php/Config/EntityTypes.php:36
+msgid "commented on a page you follow"
 msgstr "kommenterade en sida du följer"
 
 #: source/php/Config/EntityTypes.php:37
+msgid "new comments on your followed page"
+msgstr "nya kommentarer på en sida du följer"
+
+#: source/php/Config/EntityTypes.php:41
 msgid "Page"
 msgstr "Sida"
 
-#: source/php/Config/EntityTypes.php:39
+#: source/php/Config/EntityTypes.php:44
 msgid "updated a page you follow"
 msgstr "uppdaterade en sida du följer"
 
-#: source/php/Helper/Message.php:78
+#: source/php/Config/EntityTypes.php:45
+msgid "new updates on your followed page"
+msgstr "nya uppdateringar på en sida du följer"
+
+#: source/php/Helper/Message.php:80
 msgid "Someone"
 msgstr "Någon"
 
@@ -145,6 +165,10 @@ msgstr "Visa"
 msgid "This message was sent via"
 msgstr "Meddelandet skickades via"
 
+#: views/partials/dropdown-items.blade.php:13
+msgid "ago"
+msgstr "sedan"
+
 #. Plugin Name of the plugin/theme
 msgid "Notification Center"
 msgstr ""
@@ -172,6 +196,3 @@ msgstr ""
 
 #~ msgid "Update"
 #~ msgstr "Uppdatering"
-
-#~ msgid "ago"
-#~ msgstr "sedan"

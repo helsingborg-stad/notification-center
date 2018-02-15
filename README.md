@@ -1,4 +1,5 @@
-# Notification Center
+Notification Center
+==========
 
 Plugin to give logged in users notifications when others react on comments etc.
 
@@ -37,5 +38,4 @@ $postTypes      The default post types array
 $entityTypes      The default entity types array
 ```
 
----
 
