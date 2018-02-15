@@ -21,7 +21,7 @@
     color: #4d4d4d;
     border-bottom: 1px solid #e6e6e6; }
   .notification-center__list {
-    max-height: 300px;
+    max-height: 328px;
     overflow-y: scroll; }
   .notification-center__loading {
     border-top: 1px solid #e6e6e6;
