@@ -49,7 +49,7 @@ class Message
      */
     public static function notificationUrl($entityType, $entityId) : string
     {
-        $entityTypes = include(NOTIFICATIONCENTER_PATH . 'source/php/config/EntityTypes.php');
+        $entityTypes = \NotificationCenter\Helper\EntityTypes::getEntityTypes();
 
         // Get URL depending on entity type, default is Post
         switch ($entityTypes[$entityType]['type']) {
