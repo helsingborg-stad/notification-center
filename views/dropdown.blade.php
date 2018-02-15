@@ -1,5 +1,5 @@
 <a href="#" class="notification-toggle" data-dropdown=".notification-center" data-unseen="{{ $unseen }}">
-	{!! $toggleIcon !!}
+	<i class="pricon pricon-bell notification-toggle__icon"></i>
 </a>
 <ul class="dropdown-menu notification-center dropdown-menu-arrow dropdown-menu-arrow-right">
 	<li class="notification-center__header">

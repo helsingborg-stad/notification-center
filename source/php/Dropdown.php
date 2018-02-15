@@ -29,7 +29,6 @@ class Dropdown
         }
 
         $data = array();
-        $data['toggleIcon']     = apply_filters('notification_center/markup/icon', '<i class="pricon pricon-bell notification-toggle__icon"></i>');
         $data['notifications']  = $this->getUserNotifications();
         $data['unseen']         = $this->getUnseen();
         $data['entityTypes']    = \NotificationCenter\Helper\EntityTypes::getEntityTypes();
