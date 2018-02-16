@@ -87,7 +87,7 @@ NotificationCenter.Notifications.Dropdown = (function ($) {
             // Redirect to target url
             setTimeout(function(){
                 window.location.replace(href);
-            }, 10);
+            }, 40);
 
         }.bind(this));
     };
