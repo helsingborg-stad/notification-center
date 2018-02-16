@@ -33,14 +33,8 @@ class Comment extends \NotificationCenter\Notification
             /** Entity #1 : Comment reply **/
             $parentComment = get_comment($commentObj->comment_parent);
             $notifiers[] = (int)$parentComment->user_id;
-            // Add notifer if user exists in follower array and is set to true
-            if (empty($followers)
-                || (is_array($followers)
-                && array_key_exists($parentComment->user_id, $followers)
-                && $followers[$parentComment->user_id])) {
-
-                $this->insertNotifications(1, $commentId, $notifiers, $commentObj->user_id, $postId);
-            }
+            // Notify the comment author, even if the post is not followed
+            $this->insertNotifications(1, $commentId, $notifiers, $commentObj->user_id, $postId);
 
             /** Entity #2 : Post thread contribution. **/
             $contributors = get_comments(array(
