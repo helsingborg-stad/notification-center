@@ -87,8 +87,8 @@ class Follow
     {
         global $post;
 
-        // Bail if user is not logged in or notifications is not activated
-        if (!is_user_logged_in() || !\NotificationCenter\App::isActivated(get_post_type($post))) {
+        // Bail if user is not logged in or notifications is not activated or is front page
+        if (!is_user_logged_in() || !\NotificationCenter\App::isActivated(get_post_type($post)) ||is_front_page()) {
             return $items;
         }
 
