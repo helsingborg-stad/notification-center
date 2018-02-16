@@ -38,7 +38,7 @@ class App
         wp_enqueue_script('notification-center', NOTIFICATIONCENTER_URL . '/dist/js/notification-center.min.js', 'jquery', false, true);
         wp_localize_script('notification-center', 'notificationCenter', array(
             'follow'    => __('Follow', 'notification-center'),
-            'following' => __('Following', 'notification-center'),
+            'unfollow'  => __('Unfollow', 'notification-center'),
         ));
         wp_enqueue_script('notification-center');
     }

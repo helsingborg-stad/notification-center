@@ -135,7 +135,7 @@ NotificationCenter.Notifications.Follow = (function ($) {
 
             if ($target.hasClass('follow-button--following')) {
                 $('.pricon', $target).removeClass('pricon-star-o').addClass('pricon-star');
-                $('.follow-button__text', $target).text(notificationCenter.following);
+                $('.follow-button__text', $target).text(notificationCenter.unfollow);
             } else {
                 $('.pricon', $target).removeClass('pricon-star').addClass('pricon-star-o');
                 $('.follow-button__text', $target).text(notificationCenter.follow);

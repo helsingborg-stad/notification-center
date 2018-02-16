@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Notification Center\n"
-"POT-Creation-Date: 2018-02-15 20:34+0100\n"
-"PO-Revision-Date: 2018-02-15 20:34+0100\n"
+"POT-Creation-Date: 2018-02-16 13:20+0100\n"
+"PO-Revision-Date: 2018-02-16 13:23+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv\n"
@@ -75,7 +75,7 @@ msgstr "Aviseringar"
 msgid "Follow"
 msgstr "Följ"
 
-#: source/php/App.php:41 source/php/Follow.php:78 source/php/Follow.php:98
+#: source/php/App.php:41
 msgid "Following"
 msgstr "Följer"
 
@@ -128,15 +128,23 @@ msgstr "uppdaterade en sida du följer"
 msgid "new updates on your followed page"
 msgstr "nya uppdateringar på en sida du följer"
 
+#: source/php/Follow.php:78 source/php/Follow.php:98
+msgid "Unfollow"
+msgstr "Sluta följ"
+
 #: source/php/Helper/Message.php:80
 msgid "Someone"
 msgstr "Någon"
 
-#: source/php/Summary.php:69
+#: source/php/Summary.php:74
 msgid "Your latest notifications"
 msgstr "Dina senaste aviseringar"
 
-#: source/php/Summary.php:78
+#: source/php/Summary.php:75
+msgid "This message was sent via"
+msgstr "Meddelandet skickades via"
+
+#: source/php/Summary.php:84
 msgid "New notifications"
 msgstr "Nya aviseringar"
 
@@ -160,10 +168,6 @@ msgstr "Du har inga aviseringar"
 #: views/email-summary.blade.php:10
 msgid "Show"
 msgstr "Visa"
-
-#: views/email-summary.blade.php:16
-msgid "This message was sent via"
-msgstr "Meddelandet skickades via"
 
 #: views/partials/dropdown-items.blade.php:13
 msgid "ago"
