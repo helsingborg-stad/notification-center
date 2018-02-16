@@ -38,4 +38,14 @@ $postTypes      The default post types array
 $entityTypes      The default entity types array
 ```
 
+---
+
+#### notification_center/email_footer
+
+> Add custom text below the notification list
+
+*Params:*
+```
+$message      Default sender message
+```
 

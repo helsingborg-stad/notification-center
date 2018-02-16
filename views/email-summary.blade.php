@@ -13,4 +13,4 @@
     @endforeach
 </ul>
 <br>
-<?php _e('This message was sent via', 'notification-center'); ?> <a href="{{ get_option('home') }}">{{ get_option('home') }}</a>
+{!! $footer !!}

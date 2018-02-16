@@ -72,6 +72,7 @@ class Summary
 
             $data = array();
             $data['heading'] = (!empty(get_field('notification_email_heading', 'option'))) ? get_field('notification_email_heading', 'option') : __('Your latest notifications', 'notification-center');
+            $data['footer'] = apply_filters('notification_center/email_footer', sprintf('%s <a href="%s">%s</a>', __('This message was sent via', 'notification-center'), get_option('home'), get_option('home')));
             $data['entityTypes']    = \NotificationCenter\Helper\EntityTypes::getEntityTypes();
             $data['notifications']  = $notifications;
 
