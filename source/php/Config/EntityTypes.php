@@ -37,9 +37,9 @@ return [
         'message_plural' => __('new comments on your followed page', 'notification-center')
     ],
     4 => [
-        'type' => 'update',
+        'type' => 'post',
         'label' => __('Page', 'notification-center'),
-        'description' => 'New post update on followed post',
+        'description' => 'New update on followed post',
         'icon' => '<i class="pricon pricon-check pricon-badge"></i>',
         'message_singular' => __('updated a page you follow', 'notification-center'),
         'message_plural' => __('new updates on your followed page', 'notification-center')

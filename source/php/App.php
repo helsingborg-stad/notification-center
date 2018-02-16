@@ -17,7 +17,7 @@ class App
 
         // Register notification types
         new Notification\Comment();
-        new Notification\Update();
+        new Notification\Post();
     }
 
     /**
