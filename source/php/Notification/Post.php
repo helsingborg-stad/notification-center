@@ -7,6 +7,23 @@ class Post extends \NotificationCenter\Notification
     public function init()
     {
         add_action('save_post', array($this, 'updatePostNotification'), 10, 3);
+        add_action('before_delete_post', array($this, 'deletePostNotificaitons'));
+    }
+
+    /**
+     * Delete all notifications related to the post
+     * @param  int $postId The post id that is being deleted.
+     * @return void
+     */
+    public function deletePostNotificaitons($postId)
+    {
+        global $post_type, $wpdb;
+
+        if (! \NotificationCenter\App::isActivated($post_type)) {
+            return;
+        }
+
+        $wpdb->delete($wpdb->prefix . 'notification_objects', array('post_id' => $postId));
     }
 
     /**
