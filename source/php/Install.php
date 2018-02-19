@@ -62,7 +62,7 @@ class Install
           CONSTRAINT fk_notification_object
             FOREIGN KEY (notification_object_id)
             REFERENCES {$wpdb->prefix}notification_objects (ID)
-            ON DELETE NO ACTION
+            ON DELETE CASCADE
             ON UPDATE NO ACTION,
           CONSTRAINT fk_notification_notifier_id
             FOREIGN KEY (notifier_id)
