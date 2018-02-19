@@ -23,7 +23,8 @@ class Post extends \NotificationCenter\Notification
             return;
         }
 
-        $wpdb->delete($wpdb->prefix . 'notification_objects', array('post_id' => $postId));
+        $dbTable = $wpdb->prefix . 'notification_objects';
+        $wpdb->delete($dbTable, array('post_id' => $postId));
     }
 
     /**
