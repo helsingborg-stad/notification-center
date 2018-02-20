@@ -110,13 +110,27 @@ NotificationCenter.Notifications.Follow = (function ($) {
     /**
      * Follow/unfollow post
      */
-    Follow.prototype.follow = function(postId) {
+    Follow.prototype.followPost = function(postId) {
         return $.ajax({
             url: ajaxurl,
             type: 'post',
             data: {
                 action : 'follow_post',
                 postId : postId
+            }
+        });
+    };
+
+    /**
+     * Follow/unfollow post type
+     */
+    Follow.prototype.followPostType = function(postType) {
+        return $.ajax({
+            url: ajaxurl,
+            type: 'post',
+            data: {
+                action : 'follow_post_type',
+                postType : postType
             }
         });
     };
@@ -130,7 +144,7 @@ NotificationCenter.Notifications.Follow = (function ($) {
             e.preventDefault();
             $target = $(e.currentTarget);
 
-            var postId = $target.attr('data-post-id');
+            var isArchive = $target.attr('data-is-archive');
             $target.toggleClass('follow-button--following');
 
             if ($target.hasClass('follow-button--following')) {
@@ -141,7 +155,12 @@ NotificationCenter.Notifications.Follow = (function ($) {
                 $('.follow-button__text', $target).text(notificationCenter.follow);
             }
             $target.blur();
-            this.follow(postId);
+
+            if (isArchive) {
+                this.followPostType($target.attr('data-post-type'));
+            } else {
+                this.followPost($target.attr('data-post-id'));
+            }
         }.bind(this));
     };
 
