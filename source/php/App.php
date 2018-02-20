@@ -6,6 +6,7 @@ class App
 {
     public function __construct()
     {
+        add_action('init', array($this, 'allowLinkAttr'));
         add_action('wp_enqueue_scripts', array($this, 'enqueueStyles'));
         add_action('wp_enqueue_scripts', array($this, 'enqueueScripts'));
 
@@ -18,6 +19,18 @@ class App
         // Register notification types
         new Notification\Comment();
         new Notification\Post();
+    }
+
+    /**
+     * Allow data-user-id attribute for @mentions links
+     * @return void
+     */
+    public function allowLinkAttr() {
+        global $allowedposttags, $allowedtags;
+        $newattribute = "data-user-id";
+
+        $allowedposttags["a"][$newattribute] = true;
+        $allowedtags["a"][$newattribute] = true;
     }
 
     /**
