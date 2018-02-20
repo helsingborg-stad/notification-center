@@ -28,7 +28,15 @@ class Message
                     get_the_title($commentObj->comment_post_ID)
                 );
                 break;
-
+            case 'post_type':
+                $postType = get_post_type($entityId);
+                $postTypeObj = get_post_type_object($postType);
+                $message = sprintf('<strong>%s</strong> %s <strong>%s</strong>',
+                    $isSingular ? $senderName : $count,
+                    $isSingular ? $entityTypes[$entityType]['message_singular'] : $entityTypes[$entityType]['message_plural'],
+                    $postTypeObj->labels->singular_name
+                );
+                break;
             default:
                 $message = sprintf('<strong>%s</strong> %s <strong>%s</strong>',
                     $isSingular ? $senderName : $count,

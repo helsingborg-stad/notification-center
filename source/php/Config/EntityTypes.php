@@ -7,10 +7,10 @@ return [
     0 => [
         'type' => 'comment',
         'label' => __('Comment', 'notification-center'),
-        'description' => 'New comment on your page',
+        'description' => 'New comment on your post',
         'icon' => '<i class="pricon pricon-comments pricon-badge"></i>',
-        'message_singular' => __('commented on your page', 'notification-center'),
-        'message_plural' => __('new comments on your page', 'notification-center')
+        'message_singular' => __('commented on your post', 'notification-center'),
+        'message_plural' => __('new comments on your post', 'notification-center')
     ],
     1 => [
         'type' => 'comment',
@@ -31,17 +31,25 @@ return [
     3 => [
         'type' => 'comment',
         'label' => __('Comment', 'notification-center'),
-        'description' => 'New post update',
+        'description' => 'New comment on followed post',
         'icon' => '<i class="pricon pricon-comments pricon-badge"></i>',
-        'message_singular' => __('commented on a page you follow', 'notification-center'),
-        'message_plural' => __('new comments on your followed page', 'notification-center')
+        'message_singular' => __('commented on a post you follow', 'notification-center'),
+        'message_plural' => __('new comments on your followed post', 'notification-center')
     ],
     4 => [
         'type' => 'post',
-        'label' => __('Page', 'notification-center'),
+        'label' => __('Post', 'notification-center'),
         'description' => 'New update on followed post',
         'icon' => '<i class="pricon pricon-check pricon-badge"></i>',
-        'message_singular' => __('updated a page you follow', 'notification-center'),
-        'message_plural' => __('new updates on your followed page', 'notification-center')
+        'message_singular' => __('updated a post you follow', 'notification-center'),
+        'message_plural' => __('new updates on your followed post', 'notification-center')
+    ],
+    5 => [
+        'type' => 'post_type',
+        'label' => __('Post', 'notification-center'),
+        'description' => 'New post created on followed post type',
+        'icon' => '<i class="pricon pricon-plus pricon-badge"></i>',
+        'message_singular' => __('created a new post in', 'notification-center'),
+        'message_plural' => __('new posts was created in', 'notification-center')
     ]
 ];
