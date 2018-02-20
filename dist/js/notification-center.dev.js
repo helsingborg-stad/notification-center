@@ -144,7 +144,7 @@ NotificationCenter.Notifications.Follow = (function ($) {
             e.preventDefault();
             $target = $(e.currentTarget);
 
-            var isArchive = $target.attr('data-is-archive');
+            var isArchive = $target.data('isArchive');
             $target.toggleClass('follow-button--following');
 
             if ($target.hasClass('follow-button--following')) {
@@ -157,9 +157,9 @@ NotificationCenter.Notifications.Follow = (function ($) {
             $target.blur();
 
             if (isArchive) {
-                this.followPostType($target.attr('data-post-type'));
+                this.followPostType($target.data('postType'));
             } else {
-                this.followPost($target.attr('data-post-id'));
+                this.followPost($target.data('postId'));
             }
         }.bind(this));
     };
