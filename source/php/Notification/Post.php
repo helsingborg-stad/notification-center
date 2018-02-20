@@ -6,9 +6,33 @@ class Post extends \NotificationCenter\Notification
 {
     public function init()
     {
+        add_action('wp_insert_post_data', array($this, 'savePostMention'), 1, 2);
+
         add_action('save_post', array($this, 'updatePostNotification'), 10, 3);
         add_action('save_post', array($this, 'newPostNotification'), 10, 3);
         add_action('before_delete_post', array($this, 'deletePostNotificaitons'));
+    }
+
+    /**
+     * Save @Mentions found in post content as notifications
+     * @param  array $data    An array of slashed post data.
+     * @param  array $postarr An array of sanitized, but otherwise unmodified post data.
+     * @return array          Modified array of post data
+     */
+    public function savePostMention($data, $postarr)
+    {
+// Check if post type is activated
+
+        $user = wp_get_current_user();
+        preg_match_all('/data-user-id="(\d*?)"/', stripslashes($data['post_content']), $matches);
+
+        if (isset($matches[1]) && !empty($matches[1])) {
+            foreach ($matches[1] as $notifier) {
+                $this->insertNotifications(6, $postarr['ID'], array((int) $notifier), $user->ID, $postarr['ID']);
+            }
+        }
+
+        return $data;
     }
 
     /**
