@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Notification Center\n"
-"POT-Creation-Date: 2018-02-16 13:20+0100\n"
-"PO-Revision-Date: 2018-02-16 13:23+0100\n"
+"POT-Creation-Date: 2018-02-20 12:27+0100\n"
+"PO-Revision-Date: 2018-02-20 12:27+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv\n"
@@ -71,13 +71,13 @@ msgctxt "Notification center"
 msgid "Notifications"
 msgstr "Aviseringar"
 
-#: source/php/App.php:40 source/php/Follow.php:78 source/php/Follow.php:98
+#: source/php/App.php:40 source/php/Follow.php:113 source/php/Follow.php:136
 msgid "Follow"
 msgstr "Följ"
 
-#: source/php/App.php:41
-msgid "Following"
-msgstr "Följer"
+#: source/php/App.php:41 source/php/Follow.php:113 source/php/Follow.php:136
+msgid "Unfollow"
+msgstr "Sluta följ"
 
 #: source/php/Config/EntityTypes.php:9 source/php/Config/EntityTypes.php:17
 #: source/php/Config/EntityTypes.php:25 source/php/Config/EntityTypes.php:33
@@ -85,11 +85,11 @@ msgid "Comment"
 msgstr "Kommentar"
 
 #: source/php/Config/EntityTypes.php:12
-msgid "commented on your page"
+msgid "commented on your post"
 msgstr "kommenterade din sida"
 
 #: source/php/Config/EntityTypes.php:13
-msgid "new comments on your page"
+msgid "new comments on your post"
 msgstr "nya kommentarer på din sida"
 
 #: source/php/Config/EntityTypes.php:20
@@ -109,30 +109,34 @@ msgid "new comment thread contributions on"
 msgstr "nya svar i kommentarstråden på"
 
 #: source/php/Config/EntityTypes.php:36
-msgid "commented on a page you follow"
+msgid "commented on a post you follow"
 msgstr "kommenterade en sida du följer"
 
 #: source/php/Config/EntityTypes.php:37
-msgid "new comments on your followed page"
+msgid "new comments on your followed post"
 msgstr "nya kommentarer på en sida du följer"
 
-#: source/php/Config/EntityTypes.php:41
-msgid "Page"
-msgstr "Sida"
+#: source/php/Config/EntityTypes.php:41 source/php/Config/EntityTypes.php:49
+msgid "Post"
+msgstr "Inlägg"
 
 #: source/php/Config/EntityTypes.php:44
-msgid "updated a page you follow"
+msgid "updated a post you follow"
 msgstr "uppdaterade en sida du följer"
 
 #: source/php/Config/EntityTypes.php:45
-msgid "new updates on your followed page"
+msgid "new updates on your followed post"
 msgstr "nya uppdateringar på en sida du följer"
 
-#: source/php/Follow.php:78 source/php/Follow.php:98
-msgid "Unfollow"
-msgstr "Sluta följ"
+#: source/php/Config/EntityTypes.php:52
+msgid "created a new post in"
+msgstr "skapade ett nytt inlägg i"
 
-#: source/php/Helper/Message.php:80
+#: source/php/Config/EntityTypes.php:53
+msgid "new posts was created in"
+msgstr "nya inlägg har skapats i"
+
+#: source/php/Helper/Message.php:88
 msgid "Someone"
 msgstr "Någon"
 
@@ -194,6 +198,12 @@ msgstr ""
 #. Author URI of the plugin/theme
 msgid "(#plugin_author_url#)"
 msgstr ""
+
+#~ msgid "Page"
+#~ msgstr "Sida"
+
+#~ msgid "Following"
+#~ msgstr "Följer"
 
 #~ msgid "Enable follow functionality for selected post types."
 #~ msgstr "Aktivera följ-funktionalitet för utvalda posttyper."
