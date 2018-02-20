@@ -7,6 +7,7 @@ class Follow
     public function __construct()
     {
         add_action('wp_ajax_follow_post', array($this, 'followPost'));
+        add_action('wp_ajax_follow_post_type', array($this, 'followPostType'));
         add_action('save_post', array($this, 'addFollowerMeta'), 10, 3);
         add_action('Municipio/blog/post_info', array($this, 'postFollowButton'), 9, 1);
         add_filter('accessibility_items', array($this, 'pageFollowButton'), 11, 1);
@@ -39,6 +40,38 @@ class Follow
         }
 
         update_post_meta($postId, 'post_followers', $followers);
+
+        echo('Done');
+        wp_die();
+    }
+
+    /**
+     * Adds/removes follower from a post
+     * @return void
+     */
+    public function followPostType()
+    {
+        ignore_user_abort(true);
+        $user = wp_get_current_user();
+
+        if (empty($_POST['postType']) || !$user) {
+            wp_die();
+        }
+
+        $postType   = $_POST['postType'];
+        $followers  = get_option($postType . '_archive_followers');
+
+        if (is_array($followers)) {
+            if (array_key_exists($user->ID, $followers)) {
+                $followers[$user->ID] = $followers[$user->ID] ? 0 : 1;
+            } else {
+                $followers[$user->ID] = 1;
+            }
+        } else {
+            $followers = array($user->ID => 1);
+        }
+
+        update_option($postType . '_archive_followers', $followers);
 
         echo('Done');
         wp_die();
@@ -86,16 +119,19 @@ class Follow
     public function pageFollowButton($items)
     {
         global $post;
+        $queriedObject = get_queried_object();
+        $postType = is_archive() ? $queriedObject->name : get_post_type($post);
 
         // Bail if user is not logged in or notifications is not activated or is front page
-        if (!is_user_logged_in() || !\NotificationCenter\App::isActivated(get_post_type($post)) ||is_front_page()) {
+        if (!is_user_logged_in() || !\NotificationCenter\App::isActivated($postType) ||is_front_page()) {
             return $items;
         }
 
         $user = wp_get_current_user();
-        $followers = get_post_meta($post->ID, 'post_followers', true);
+        $followers = is_archive() ? get_option($postType . '_archive_followers') : get_post_meta($post->ID, 'post_followers', true);
         $isFollowing = (is_array($followers) && in_array($user->ID, array_keys(array_filter($followers)))) ? 1 : 0;
-        $items[] = '<span><a href="#" class="follow-button ' . ($isFollowing ? 'follow-button--following' : '') . ' " data-post-id="' . $post->ID . '"><i class="pricon ' . ($isFollowing ? 'pricon-star' : 'pricon-star-o') . '"></i> <span class="follow-button__text">' . ($isFollowing ? __('Unfollow', 'notification-center') : __('Follow', 'notification-center')) . '</span></a></span>';
+
+        $items[] = '<span><a href="#" class="follow-button ' . ($isFollowing ? 'follow-button--following' : '') . ' " data-is-archive="' . is_archive() . '" data-post-type="' . $postType . '" data-post-id="' . $post->ID . '"><i class="pricon ' . ($isFollowing ? 'pricon-star' : 'pricon-star-o') . '"></i> <span class="follow-button__text">' . ($isFollowing ? __('Unfollow', 'notification-center') : __('Follow', 'notification-center')) . '</span></a></span>';
 
         return $items;
     }
