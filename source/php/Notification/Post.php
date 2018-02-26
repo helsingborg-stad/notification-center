@@ -6,8 +6,7 @@ class Post extends \NotificationCenter\Notification
 {
     public function init()
     {
-        add_action('wp_insert_post_data', array($this, 'savePostMention'), 1, 2);
-
+        add_action('wp_insert_post_data', array($this, 'savePostMention'), 99, 2);
         add_action('save_post', array($this, 'updatePostNotification'), 10, 3);
         add_action('save_post', array($this, 'newPostNotification'), 10, 3);
         add_action('before_delete_post', array($this, 'deletePostNotificaitons'));
@@ -21,15 +20,23 @@ class Post extends \NotificationCenter\Notification
      */
     public function savePostMention($data, $postarr)
     {
-// Check if post type is activated
+        // Bail if post type is not activated
+        if (! \NotificationCenter\App::isActivated($postarr['post_type'])) {
+            return $data;
+        }
 
         $user = wp_get_current_user();
-        preg_match_all('/data-user-id="(\d*?)"/', stripslashes($data['post_content']), $matches);
+        // Get all user id attributes
+        preg_match_all('/data-mention-id="(\d*?)"/', stripslashes($data['post_content']), $matches);
 
         if (isset($matches[1]) && !empty($matches[1])) {
-            foreach ($matches[1] as $notifier) {
+            foreach ($matches[1] as $key => $notifier) {
+                /** Entity #6 : User mention in post content **/
                 $this->insertNotifications(6, $postarr['ID'], array((int) $notifier), $user->ID, $postarr['ID']);
             }
+
+            // Replace 'data-mention-id' attribute to avoid duplicate notifications
+            $data['post_content'] = preg_replace('/data-mention-id/', 'data-user-id', $data['post_content']);
         }
 
         return $data;
