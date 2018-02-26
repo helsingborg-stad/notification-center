@@ -85,9 +85,9 @@ NotificationCenter.Notifications.Dropdown = (function ($) {
             $(e.target).closest('.notification-center__item--unseen').removeClass('notification-center__item--unseen');
 
             // Redirect to target url
-            setTimeout(function(){
+            setTimeout(function() {
                 window.location.replace(href);
-            }, 40);
+            }, 60);
 
         }.bind(this));
     };
