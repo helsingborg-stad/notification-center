@@ -90,8 +90,10 @@ class Post extends \NotificationCenter\Notification
     {
         $postType = get_post_type($postId);
 
-        // Bail if post type is not activated
-        if (! \NotificationCenter\App::isActivated($postType) || $update) {
+        // Bail if post is either: not activated, autosave function, revision
+        if (! \NotificationCenter\App::isActivated(get_post_type($postId))
+            || (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
+            || wp_is_post_revision($postId)) {
             return;
         }
 
