@@ -27,7 +27,7 @@ class Summary
      */
     public function emailDailySummary()
     {
-        if (get_field('notification_email_summary', 'option') == false) {
+        if (get_field('notification_email_summary', 'option') == false || get_current_blog_id() != 1) {
             return;
         }
 
