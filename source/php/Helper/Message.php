@@ -12,8 +12,10 @@ class Message
      * @param  string $count        Number of notifications
      * @return string               The notification message
      */
-    public static function buildMessage($entityType, $entityId, $senderId, $count) : string
+    public static function buildMessage($entityType, $entityId, $senderId, $count, $blogId) : string
     {
+        switch_to_blog((int) $blogId);
+
         $entityTypes = \NotificationCenter\Helper\EntityTypes::getEntityTypes();
         $senderName = self::getUserName($senderId);
         $isSingular = (int)$count == 1 ? true : false;
@@ -46,6 +48,7 @@ class Message
                 break;
         }
 
+        restore_current_blog();
         return $message;
     }
 
@@ -55,25 +58,36 @@ class Message
      * @param  int    $entityId     Entity ID
      * @return string               The notification URL
      */
-    public static function notificationUrl($entityType, $entityId) : string
+    public static function notificationUrl($entityType, $entityId, $blogId) : string
     {
+        switch_to_blog((int) $blogId);
         $entityTypes = \NotificationCenter\Helper\EntityTypes::getEntityTypes();
 
         // Get URL depending on entity type, default is Post
         switch ($entityTypes[$entityType]['type']) {
             case 'comment':
                 $commentObj = get_comment($entityId);
-                // Get the comment/answer target
-                $url = $commentObj->comment_parent > 0 ? get_the_permalink($commentObj->comment_post_ID) . '#answer-' .  $entityId : get_comment_link($entityId);
+
+                $postType = get_post_type($commentObj->comment_post_ID);
+                $url = add_query_arg( array(
+                    'post_type' => $postType
+                ), wp_get_shortlink($commentObj->comment_post_ID));
+
+                // Add comment/answer target
+                $url = $commentObj->comment_parent > 0 ? $url . '#answer-' .  $entityId : $url . '#comment-' .  $entityId;
 
                 break;
 
             default:
-                $url = get_the_permalink($entityId);
+                $postType = get_post_type($entityId);
+                $url = add_query_arg( array(
+                    'post_type' => $postType
+                ), wp_get_shortlink($entityId));
 
                 break;
         }
 
+        restore_current_blog();
         return $url;
     }
 

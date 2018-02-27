@@ -66,7 +66,7 @@ class Summary
                             WHEN no.post_id IS NOT NULL
                             THEN 1
                             ELSE 0
-                        END, no.post_id, no.entity_type, n.status
+                        END, no.post_id, no.entity_type, no.blog_id, n.status
                 ORDER BY no.created DESC
             ");
 

@@ -47,8 +47,8 @@ class Dropdown
 
         $unseen = $wpdb->get_results("
             SELECT COUNT(*) count
-            FROM {$wpdb->prefix}notifications n
-            INNER JOIN {$wpdb->prefix}notification_objects no
+            FROM {$wpdb->base_prefix}notifications n
+            INNER JOIN {$wpdb->base_prefix}notification_objects no
                 ON n.notification_object_id = no.ID
             WHERE n.notifier_id = {$user->ID}
                 AND n.status = 0
@@ -57,7 +57,7 @@ class Dropdown
                 WHEN no.post_id IS NOT NULL
                 THEN 1
                 ELSE 0
-            END, no.post_id, no.entity_type
+            END, no.post_id, no.entity_type, no.blog_id
         ");
         $unseen = $wpdb->num_rows;
 
@@ -79,8 +79,8 @@ class Dropdown
         $notifications = $wpdb->get_results("
             SELECT *, COUNT(*) count,
                 GROUP_CONCAT(DISTINCT n.ID SEPARATOR ',') AS id_list
-            FROM {$wpdb->prefix}notifications n
-            INNER JOIN {$wpdb->prefix}notification_objects no
+            FROM {$wpdb->base_prefix}notifications n
+            INNER JOIN {$wpdb->base_prefix}notification_objects no
                 ON n.notification_object_id = no.ID
             WHERE n.notifier_id = {$userId}
                 AND no.created > NOW() - INTERVAL 30 DAY
@@ -88,7 +88,7 @@ class Dropdown
                         WHEN no.post_id IS NOT NULL
                         THEN 1
                         ELSE 0
-                    END, no.post_id, no.entity_type, n.status
+                    END, no.post_id, no.entity_type, no.blog_id, n.status
             ORDER BY no.created DESC
             LIMIT $offset, 15"
         );
@@ -134,7 +134,7 @@ class Dropdown
         $ids    = $_POST['notificationIds'];
 
         $wpdb->query("
-            UPDATE {$wpdb->prefix}notifications
+            UPDATE {$wpdb->base_prefix}notifications
             SET status = 1
             WHERE ID IN ({$ids})
                 AND notifier_id = $userId

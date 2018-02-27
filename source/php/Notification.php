@@ -29,7 +29,7 @@ class Notification
         }
 
         // Insert the notification data in 'notification_objects' table
-        $tableName = $wpdb->prefix . 'notification_objects';
+        $tableName = $wpdb->base_prefix . 'notification_objects';
         $wpdb->insert(
             $tableName,
             array(
@@ -37,6 +37,7 @@ class Notification
                 'entity_type' => $entityType,
                 'entity_id' => $entityId,
                 'post_id' => $postId,
+                'blog_id' => get_current_blog_id(),
                 'created' => current_time('mysql')
             )
         );
@@ -46,7 +47,7 @@ class Notification
         // Insert notification recipients in 'notification' table
         $values = array();
         $placeHolders = array();
-        $tableName = $wpdb->prefix . 'notifications';
+        $tableName = $wpdb->base_prefix . 'notifications';
         $query = "INSERT INTO $tableName (notification_object_id, notifier_id) VALUES ";
         // Loop through all notifiers to insert them as multiple rows
         foreach ($notifiers as $notifier) {
