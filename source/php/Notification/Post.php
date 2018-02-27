@@ -8,8 +8,31 @@ class Post extends \NotificationCenter\Notification
     {
         add_action('wp_insert_post_data', array($this, 'savePostMention'), 99, 2);
         add_action('save_post', array($this, 'updatePostNotification'), 10, 3);
-        add_action('save_post', array($this, 'newPostNotification'), 10, 3);
         add_action('before_delete_post', array($this, 'deletePostNotificaitons'));
+        add_action('transition_post_status', array($this,'newPostNotification'), 10, 3);
+    }
+
+    /**
+     * Adds a notification to post type followers when a new post is created
+     * @param  string $new  New post status
+     * @param  string $old  Old post status
+     * @param  obj $post    Post Object
+     * @return void
+     */
+    public function newPostNotification($new, $old, $post) {
+        // On first publish
+        if ($new == 'publish' && $old != 'publish' && isset($post->post_type) && \NotificationCenter\App::isActivated($post->post_type)) {
+            error_log("NEW CREATD: " . $post->ID);
+
+            /** Entity #5 : New post on followed post type **/
+            $followers = get_option($post->post_type . '_archive_followers');
+            if (!empty($followers)) {
+                $followers = array_keys(array_filter($followers));
+                if (is_array($followers) && !empty($followers)) {
+                    $this->insertNotifications(5, $post->ID, $followers, $post->post_author, $post->ID);
+                }
+            }
+        }
     }
 
     /**
@@ -78,33 +101,6 @@ class Post extends \NotificationCenter\Notification
         $followers = array_keys(array_filter($followers));
         if (is_array($followers) && !empty($followers)) {
             $this->insertNotifications(4, $postId, $followers, $post->post_author, $postId);
-        }
-    }
-
-    /**
-     * Adds a notification to post type followers when a new post is created
-     * @param  int $postId Post ID
-     * @return void
-     */
-    public function newPostNotification($postId, $post, $update)
-    {
-        $postType = get_post_type($postId);
-
-        // Bail if post is either: not activated, autosave function, revision, update
-        if (! \NotificationCenter\App::isActivated(get_post_type($postId))
-            || (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
-            || wp_is_post_revision($postId)
-            || $update) {
-            return;
-        }
-
-        /** Entity #5 : New post on followed post type **/
-        $followers = get_option($postType . '_archive_followers');
-        if (!empty($followers)) {
-            $followers = array_keys(array_filter($followers));
-            if (is_array($followers) && !empty($followers)) {
-                $this->insertNotifications(5, $postId, $followers, $post->post_author, $postId);
-            }
         }
     }
 }
