@@ -31,12 +31,16 @@ class Message
                 );
                 break;
             case 'post_type':
-                $postType = get_post_type($entityId);
-                $postTypeObj = get_post_type_object($postType);
-                $message = sprintf('<strong>%s</strong> %s <strong>%s</strong>',
-                    $isSingular ? $senderName : $count,
-                    $isSingular ? $entityTypes[$entityType]['message_singular'] : $entityTypes[$entityType]['message_plural'],
-                    $postTypeObj->labels->singular_name
+                $postTypeSlug = get_post_type($entityId);
+                $postTypes = \NotificationCenter\App::activePostTypes();
+                $postTypeLabel = !empty($postTypes[$postTypeSlug]) ? $postTypes[$postTypeSlug] : __('a post type you follow', 'notification-center');
+
+                $message = sprintf('<strong>%s</strong> %s <strong>%s</strong> %s <strong>%s</strong>',
+                    $senderName,
+                    $entityTypes[$entityType]['message_singular'],
+                    get_the_title($entityId),
+                    __('in', 'notification-center'),
+                    $postTypeLabel
                 );
                 break;
             default:
@@ -70,8 +74,9 @@ class Message
 
                 $postType = get_post_type($commentObj->comment_post_ID);
                 $url = add_query_arg( array(
+                    'p' => $commentObj->comment_post_ID,
                     'post_type' => $postType
-                ), wp_get_shortlink($commentObj->comment_post_ID));
+                ), home_url('/'));
 
                 // Add comment/answer target
                 $url = $commentObj->comment_parent > 0 ? $url . '#answer-' .  $entityId : $url . '#comment-' .  $entityId;
@@ -81,8 +86,9 @@ class Message
             default:
                 $postType = get_post_type($entityId);
                 $url = add_query_arg( array(
+                    'p' => $entityId,
                     'post_type' => $postType
-                ), wp_get_shortlink($entityId));
+                ), home_url('/'));
 
                 break;
         }

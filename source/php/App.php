@@ -57,6 +57,15 @@ class App
     }
 
     /**
+     * Returns activated post types
+     * @return array Activated posttypes
+     */
+    public static function activePostTypes() : array
+    {
+        return apply_filters('notification_center/activated_posttypes', get_post_types(array('public' => true)));
+    }
+
+    /**
      * Checks if notifications is activated for a post type
      * @return boolean
      */
@@ -66,7 +75,7 @@ class App
             return false;
         }
 
-        $postTypes = apply_filters('notification_center/activated_posttypes', get_post_types(array('public' => true)));
-        return in_array($postType, $postTypes);
+        $postTypes = self::activePostTypes();
+        return array_key_exists($postType, $postTypes);
     }
 }

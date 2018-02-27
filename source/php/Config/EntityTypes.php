@@ -49,8 +49,8 @@ return [
         'label' => __('Post', 'notification-center'),
         'description' => 'New post created on followed post type',
         'icon' => '<i class="pricon pricon-badge pricon-plus"></i>',
-        'message_singular' => __('created a new post in', 'notification-center'),
-        'message_plural' => __('new posts was created in', 'notification-center')
+        'message_singular' => __('created', 'notification-center'),
+        'message_plural' => '',
     ],
     6 => [
         'type' => 'post',
@@ -58,6 +58,6 @@ return [
         'description' => 'New post mention',
         'icon' => '<i class="pricon pricon-badge pricon-user"></i>',
         'message_singular' => __('mentioned you in', 'notification-center'),
-        'message_plural' => __('new mentions in', 'notification-center')
+        'message_plural' => __('persons mentioned you in', 'notification-center')
     ]
 ];

@@ -22,7 +22,6 @@ class Post extends \NotificationCenter\Notification
     public function newPostNotification($new, $old, $post) {
         // On first publish
         if ($new == 'publish' && $old != 'publish' && isset($post->post_type) && \NotificationCenter\App::isActivated($post->post_type)) {
-            error_log("NEW CREATD: " . $post->ID);
 
             /** Entity #5 : New post on followed post type **/
             $followers = get_option($post->post_type . '_archive_followers');
