@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Notification Center\n"
-"POT-Creation-Date: 2018-02-20 12:27+0100\n"
-"PO-Revision-Date: 2018-02-20 12:27+0100\n"
+"POT-Creation-Date: 2018-02-27 16:47+0100\n"
+"PO-Revision-Date: 2018-02-27 16:47+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv\n"
@@ -71,11 +71,11 @@ msgctxt "Notification center"
 msgid "Notifications"
 msgstr "Aviseringar"
 
-#: source/php/App.php:40 source/php/Follow.php:113 source/php/Follow.php:136
+#: source/php/App.php:53 source/php/Follow.php:111 source/php/Follow.php:134
 msgid "Follow"
 msgstr "Följ"
 
-#: source/php/App.php:41 source/php/Follow.php:113 source/php/Follow.php:136
+#: source/php/App.php:54 source/php/Follow.php:111 source/php/Follow.php:134
 msgid "Unfollow"
 msgstr "Sluta följ"
 
@@ -117,6 +117,7 @@ msgid "new comments on your followed post"
 msgstr "nya kommentarer på en sida du följer"
 
 #: source/php/Config/EntityTypes.php:41 source/php/Config/EntityTypes.php:49
+#: source/php/Config/EntityTypes.php:57
 msgid "Post"
 msgstr "Inlägg"
 
@@ -129,14 +130,26 @@ msgid "new updates on your followed post"
 msgstr "nya uppdateringar på en sida du följer"
 
 #: source/php/Config/EntityTypes.php:52
-msgid "created a new post in"
-msgstr "skapade ett nytt inlägg i"
+msgid "created"
+msgstr "skapade"
 
-#: source/php/Config/EntityTypes.php:53
-msgid "new posts was created in"
-msgstr "nya inlägg har skapats i"
+#: source/php/Config/EntityTypes.php:60
+msgid "mentioned you in"
+msgstr "nämnde dig i"
 
-#: source/php/Helper/Message.php:88
+#: source/php/Config/EntityTypes.php:61
+msgid "persons mentioned you in"
+msgstr "personer nämnde dig i"
+
+#: source/php/Helper/Message.php:38
+msgid "a post type you follow"
+msgstr "en posttyp du följer"
+
+#: source/php/Helper/Message.php:45
+msgid "in"
+msgstr "i"
+
+#: source/php/Helper/Message.php:112
 msgid "Someone"
 msgstr "Någon"
 
@@ -198,6 +211,15 @@ msgstr ""
 #. Author URI of the plugin/theme
 msgid "(#plugin_author_url#)"
 msgstr ""
+
+#~ msgid "new mentions in"
+#~ msgstr "personer har nämnt dig i"
+
+#~ msgid "created a new post in"
+#~ msgstr "skapade ett nytt inlägg i"
+
+#~ msgid "new posts was created in"
+#~ msgstr "nya inlägg har skapats i"
 
 #~ msgid "Page"
 #~ msgstr "Sida"
