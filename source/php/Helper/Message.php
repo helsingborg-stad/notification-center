@@ -30,6 +30,21 @@ class Message
                     get_the_title($commentObj->comment_post_ID)
                 );
                 break;
+            case 'comment_mention':
+                $commentObj = get_comment($entityId);
+                if ($isSingular) {
+                    $message = sprintf('<strong>%s</strong> %s.',
+                        $senderName,
+                        $isSingular ? $entityTypes[$entityType]['message_singular'] : $entityTypes[$entityType]['message_plural']
+                    );
+                } else {
+                    $message = sprintf('<strong>%s</strong> %s <strong>%s</strong>',
+                        $count,
+                        $entityTypes[$entityType]['message_plural'],
+                        get_the_title($commentObj->comment_post_ID)
+                    );
+                }
+                break;
             case 'post_type':
                 $postTypeSlug = get_post_type($entityId);
                 $postTypes = \NotificationCenter\App::activePostTypes();
@@ -70,6 +85,7 @@ class Message
         // Get URL depending on entity type, default is Post
         switch ($entityTypes[$entityType]['type']) {
             case 'comment':
+            case 'comment_mention':
                 $commentObj = get_comment($entityId);
 
                 $postType = get_post_type($commentObj->comment_post_ID);

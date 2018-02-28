@@ -59,5 +59,13 @@ return [
         'icon' => '<i class="pricon pricon-badge pricon-user"></i>',
         'message_singular' => __('mentioned you in', 'notification-center'),
         'message_plural' => __('persons mentioned you in', 'notification-center')
+    ],
+    7 => [
+        'type' => 'comment_mention',
+        'label' => __('Comment', 'notification-center'),
+        'description' => 'New comment mention',
+        'icon' => '<i class="pricon pricon-badge pricon-user"></i>',
+        'message_singular' => __('mentioned you in a comment', 'notification-center'),
+        'message_plural' => __('persons mentioned you in', 'notification-center')
     ]
 ];

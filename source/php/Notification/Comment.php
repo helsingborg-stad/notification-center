@@ -45,23 +45,38 @@ class Comment extends \NotificationCenter\Notification
     public function newComment($commentId, $commentObj)
     {
         $postId = $commentObj->comment_post_ID;
+        // Gather notifiers to avoid adding multiple notifications for the same event
+        $notifiers = array();
+
+        // Get all mentioned users
+        preg_match_all('/data-mention-id="(\d*?)"/', stripslashes($commentObj->comment_content), $matches);
+
+        // Notify all mentioned users
+        if (isset($matches[1]) && !empty($matches[1])) {
+            foreach ($matches[1] as $key => $notifier) {
+                /** Entity #7 : User mention in comments **/
+                $this->insertNotifications(7, $commentId, array((int) $notifier), $commentObj->user_id, $postId);
+                $notifiers[] = (int)$notifier;
+            }
+        }
 
         // Bail if notifications is not activated
         if (! \NotificationCenter\App::isActivated(get_post_type($postId))) {
             return;
         }
 
-        // Gather notifiers to avoid adding multiple notifications
-        $notifiers = array();
         // Get list of post followers
         $followers = get_post_meta($postId, 'post_followers', true);
 
         if ($commentObj->comment_parent > 0) {
             /** Entity #1 : Comment reply **/
             $parentComment = get_comment($commentObj->comment_parent);
-            $notifiers[] = (int)$parentComment->user_id;
-            // Notify the comment author, even if the post is not followed
-            $this->insertNotifications(1, $commentId, $notifiers, $commentObj->user_id, $postId);
+            $notifier = (int)$parentComment->user_id;
+            if (!in_array($notifier, $notifiers)) {
+                // Notify the comment author, even if the post is not followed
+                $this->insertNotifications(1, $commentId, array($notifier), $commentObj->user_id, $postId);
+                $notifiers[] = $notifier;
+            }
 
             /** Entity #2 : Post thread contribution. **/
             $contributors = get_comments(array(

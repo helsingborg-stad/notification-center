@@ -27,7 +27,7 @@ class App
      */
     public function allowLinkAttr() {
         global $allowedposttags, $allowedtags;
-        $newattribute = "data-user-id";
+        $newattribute = "data-mention-id";
 
         $allowedposttags["a"][$newattribute] = true;
         $allowedtags["a"][$newattribute] = true;

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Notification Center\n"
-"POT-Creation-Date: 2018-02-27 16:47+0100\n"
-"PO-Revision-Date: 2018-02-27 16:47+0100\n"
+"POT-Creation-Date: 2018-02-28 14:43+0100\n"
+"PO-Revision-Date: 2018-02-28 14:43+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv\n"
@@ -81,6 +81,7 @@ msgstr "Sluta följ"
 
 #: source/php/Config/EntityTypes.php:9 source/php/Config/EntityTypes.php:17
 #: source/php/Config/EntityTypes.php:25 source/php/Config/EntityTypes.php:33
+#: source/php/Config/EntityTypes.php:65
 msgid "Comment"
 msgstr "Kommentar"
 
@@ -135,21 +136,25 @@ msgstr "skapade"
 
 #: source/php/Config/EntityTypes.php:60
 msgid "mentioned you in"
-msgstr "nämnde dig i"
+msgstr "har nämnt dig i"
 
-#: source/php/Config/EntityTypes.php:61
+#: source/php/Config/EntityTypes.php:61 source/php/Config/EntityTypes.php:69
 msgid "persons mentioned you in"
-msgstr "personer nämnde dig i"
+msgstr "personer har nämnt dig i"
 
-#: source/php/Helper/Message.php:38
+#: source/php/Config/EntityTypes.php:68
+msgid "mentioned you in a comment"
+msgstr "har nämnt dig i en kommentar"
+
+#: source/php/Helper/Message.php:51
 msgid "a post type you follow"
 msgstr "en posttyp du följer"
 
-#: source/php/Helper/Message.php:45
+#: source/php/Helper/Message.php:57
 msgid "in"
 msgstr "i"
 
-#: source/php/Helper/Message.php:112
+#: source/php/Helper/Message.php:123
 msgid "Someone"
 msgstr "Någon"
 

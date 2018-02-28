@@ -42,11 +42,6 @@ class Post extends \NotificationCenter\Notification
      */
     public function savePostMention($data, $postarr)
     {
-        // Bail if post type is not activated
-        if (! \NotificationCenter\App::isActivated($postarr['post_type'])) {
-            return $data;
-        }
-
         $user = wp_get_current_user();
         // Get all user id attributes
         preg_match_all('/data-mention-id="(\d*?)"/', stripslashes($data['post_content']), $matches);
