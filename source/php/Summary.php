@@ -41,7 +41,7 @@ class Summary
                 ON n.notifier_id = u.ID
             JOIN {$wpdb->prefix}notification_objects no
                 ON no.ID = n.notification_object_id
-            WHERE no.created > NOW() - INTERVAL 24 HOUR
+            WHERE no.created BETWEEN NOW() - INTERVAL 48 HOUR AND NOW() - INTERVAL 24 HOUR
                 AND n.status = 0
             GROUP BY u.ID
         ");
@@ -61,7 +61,7 @@ class Summary
                     ON n.notification_object_id = no.ID
                 WHERE n.notifier_id = {$notifier->ID}
                     AND n.status = 0
-                    AND no.created > NOW() - INTERVAL 30 DAY
+                    AND no.created BETWEEN NOW() - INTERVAL 48 HOUR AND NOW() - INTERVAL 24 HOUR
                 GROUP BY CASE
                             WHEN no.post_id IS NOT NULL
                             THEN 1
@@ -69,6 +69,10 @@ class Summary
                         END, no.post_id, no.entity_type, no.blog_id, n.status
                 ORDER BY no.created DESC
             ");
+
+            if (empty($notifications)) {
+                continue;
+            }
 
             $data = array();
             $data['heading'] = (!empty(get_field('notification_email_heading', 'option'))) ? get_field('notification_email_heading', 'option') : __('Your latest notifications', 'notification-center');
