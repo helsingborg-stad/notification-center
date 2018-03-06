@@ -32,7 +32,7 @@ class Comment extends \NotificationCenter\Notification
         $entities = implode(',', $entities);
 
         // Delete the comment notifications
-        $dbTable = $wpdb->prefix . 'notification_objects';
+        $dbTable = $wpdb->base_prefix . 'notification_objects';
         $wpdb->query("DELETE FROM {$dbTable} WHERE entity_id = {$commentId} AND entity_type IN({$entities})");
     }
 
