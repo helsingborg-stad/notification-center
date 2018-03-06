@@ -7,7 +7,7 @@ class Comment extends \NotificationCenter\Notification
     public function init()
     {
         add_action('wp_insert_comment', array($this, 'newComment'), 99, 2);
-        add_action('delete_comment', array($this, 'deleteCommentNotificaitons'), 10, 2);
+        add_action('delete_comment', array($this, 'deleteCommentNotifications'), 10, 2);
     }
 
     /**
@@ -16,10 +16,11 @@ class Comment extends \NotificationCenter\Notification
      * @param  obj $commentObj  The comment to be deleted
      * @return void
      */
-    public function deleteCommentNotificaitons($commentId, $commentObj)
+    public function deleteCommentNotifications($commentId, $commentObj)
     {
         global $wpdb;
         $postType = get_post_type($commentObj->comment_post_ID);
+        $blogId = get_current_blog_id();
 
         if (! \NotificationCenter\App::isActivated($postType)) {
             return;
@@ -33,7 +34,7 @@ class Comment extends \NotificationCenter\Notification
 
         // Delete the comment notifications
         $dbTable = $wpdb->base_prefix . 'notification_objects';
-        $wpdb->query("DELETE FROM {$dbTable} WHERE entity_id = {$commentId} AND entity_type IN({$entities})");
+        $wpdb->query("DELETE FROM {$dbTable} WHERE entity_id = {$commentId} AND entity_type IN({$entities}) AND blog_id = {$blogId}");
     }
 
     /**
