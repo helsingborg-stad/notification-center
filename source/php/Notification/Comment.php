@@ -115,8 +115,8 @@ class Comment extends \NotificationCenter\Notification
 
         /** Entity #3: New post comment on followed post **/
         // Remove 'unfollowed' and already notified users
-        $followers = array_keys(array_filter($followers));
         if (is_array($followers) && !empty($followers)) {
+            $followers = array_keys(array_filter($followers));
             $notifiers = array_diff($followers, $notifiers);
 
             $this->insertNotifications(3, $commentId, $notifiers, $commentObj->user_id, $postId);
