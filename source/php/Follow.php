@@ -26,8 +26,8 @@ class Follow
             wp_die();
         }
 
-        $postId     = (int)$_POST['postId'];
-        $followers  = get_post_meta($postId, 'post_followers', true);
+        $postId = (int)$_POST['postId'];
+        $followers = get_post_meta($postId, 'post_followers', true);
 
         if (is_array($followers)) {
             if (array_key_exists($user->ID, $followers)) {

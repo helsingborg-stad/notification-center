@@ -67,5 +67,13 @@ return [
         'icon' => '<i class="pricon pricon-badge pricon-user"></i>',
         'message_singular' => __('mentioned you in a comment', 'notification-center'),
         'message_plural' => __('persons mentioned you in', 'notification-center')
+    ],
+    8 => [
+        'type' => 'post',
+        'label' => __('Post', 'notification-center'),
+        'description' => 'New group invitation',
+        'icon' => '<i class="pricon pricon-badge pricon-user"></i>',
+        'message_singular' => __('invited you to the group', 'notification-center'),
+        'message_plural' => __('persons invited you to the group', 'notification-center')
     ]
 ];

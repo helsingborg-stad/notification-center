@@ -9,7 +9,39 @@ class Post extends \NotificationCenter\Notification
         add_action('wp_insert_post_data', array($this, 'savePostMention'), 99, 2);
         add_action('save_post', array($this, 'updatePostNotification'), 10, 3);
         add_action('before_delete_post', array($this, 'deletePostNotificaitons'));
-        add_action('transition_post_status', array($this,'newPostNotification'), 10, 3);
+        add_action('transition_post_status', array($this, 'newPostNotification'), 10, 3);
+        add_action('Municipio/sharePost/recipients', array($this, 'inviteNotification'), 10, 4);
+    }
+
+    /**
+     * Notification on group invite
+     * @param  int      $postId      Post ID
+     * @param  obj      $sender      Senders user object
+     * @param  array    $recipients  List of recipients
+     * @param  string   $shareType   [description]
+     * @return void
+     */
+    public function inviteNotification($postId, $sender, $recipients, $shareType)
+    {
+        if ($shareType != 'invite') {
+            return;
+        }
+
+        /** Entity #8 : New group invitation **/
+        // Collect recipients IDs
+        $notifiers = array();
+        if (is_array($recipients) && !empty($recipients)) {
+            foreach ($recipients as $recipient) {
+                $notifier = get_user_by('email', $recipient);
+                if ($notifier) {
+                    $notifiers[] = $notifier->ID;
+                }
+            }
+        }
+
+        if (!empty($notifiers)) {
+            $this->insertNotifications(8, $postId, $notifiers, $sender->ID, $postId);
+        }
     }
 
     /**
@@ -19,7 +51,8 @@ class Post extends \NotificationCenter\Notification
      * @param  obj $post    Post Object
      * @return void
      */
-    public function newPostNotification($new, $old, $post) {
+    public function newPostNotification($new, $old, $post)
+    {
         // On first publish
         if ($new == 'publish' && $old != 'publish' && isset($post->post_type) && \NotificationCenter\App::isActivated($post->post_type)) {
 
