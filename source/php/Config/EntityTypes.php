@@ -70,9 +70,9 @@ return [
     ],
     8 => [
         'type' => 'post',
-        'label' => __('Post', 'notification-center'),
+        'label' => __('Group', 'notification-center'),
         'description' => 'New group invitation',
-        'icon' => '<i class="pricon pricon-badge pricon-user"></i>',
+        'icon' => '<i class="pricon pricon-badge pricon-group"></i>',
         'message_singular' => __('invited you to the group', 'notification-center'),
         'message_plural' => __('persons invited you to the group', 'notification-center')
     ]
