@@ -87,10 +87,11 @@ class Message
             case 'comment':
             case 'comment_mention':
                 $commentObj = get_comment($entityId);
-
                 $postType = get_post_type($commentObj->comment_post_ID);
+                // Parameter 'page_id' only works with Pages
+                $param = $postType == 'page' ? 'page_id' : 'p';
                 $url = add_query_arg( array(
-                    'p' => $commentObj->comment_post_ID,
+                    $param => $commentObj->comment_post_ID,
                     'post_type' => $postType
                 ), home_url('/'));
 
@@ -101,8 +102,9 @@ class Message
 
             default:
                 $postType = get_post_type($entityId);
+                $param = $postType == 'page' ? 'page_id' : 'p';
                 $url = add_query_arg( array(
-                    'p' => $entityId,
+                    $param => $entityId,
                     'post_type' => $postType
                 ), home_url('/'));
 
