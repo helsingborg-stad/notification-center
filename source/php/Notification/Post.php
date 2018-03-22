@@ -79,7 +79,7 @@ class Post extends \NotificationCenter\Notification
         // Get all user id attributes
         preg_match_all('/data-mention-id="(\d*?)"/', stripslashes($data['post_content']), $matches);
 
-        if (isset($matches[1]) && !empty($matches[1])) {
+        if (isset($matches[1]) && !empty($matches[1]) && $user) {
             foreach ($matches[1] as $key => $notifier) {
                 /** Entity #6 : User mention in post content **/
                 $this->insertNotifications(6, $postarr['ID'], array((int) $notifier), $user->ID, $postarr['ID']);
@@ -124,10 +124,11 @@ class Post extends \NotificationCenter\Notification
         }
 
         /** Entity #4 : New post update **/
+        $user = wp_get_current_user();
         $followers = get_post_meta($postId, 'post_followers', true);
         $followers = array_keys(array_filter($followers));
-        if (is_array($followers) && !empty($followers)) {
-            $this->insertNotifications(4, $postId, $followers, $post->post_author, $postId);
+        if (is_array($followers) && !empty($followers) && $user) {
+            $this->insertNotifications(4, $postId, $followers, $user->ID, $postId);
         }
     }
 }
