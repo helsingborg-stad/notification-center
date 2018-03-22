@@ -10,7 +10,7 @@ class Post extends \NotificationCenter\Notification
         add_action('save_post', array($this, 'updatePostNotification'), 10, 3);
         add_action('before_delete_post', array($this, 'deletePostNotificaitons'));
         add_action('transition_post_status', array($this, 'newPostNotification'), 10, 3);
-        add_action('Municipio/sharePost/recipients', array($this, 'inviteNotification'), 10, 4);
+        add_action('Municipio/share_post/recipients', array($this, 'inviteNotification'), 10, 4);
     }
 
     /**
