@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Notification Center\n"
-"POT-Creation-Date: 2018-02-28 14:43+0100\n"
-"PO-Revision-Date: 2018-02-28 14:43+0100\n"
+"POT-Creation-Date: 2018-03-27 14:44+0200\n"
+"PO-Revision-Date: 2018-03-27 14:44+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv\n"
@@ -146,6 +146,18 @@ msgstr "personer har nämnt dig i"
 msgid "mentioned you in a comment"
 msgstr "har nämnt dig i en kommentar"
 
+#: source/php/Config/EntityTypes.php:73
+msgid "Forum"
+msgstr "Forum"
+
+#: source/php/Config/EntityTypes.php:76
+msgid "invited you to the forum"
+msgstr "har bjudit in dig att gå med i diskussionsforumet"
+
+#: source/php/Config/EntityTypes.php:77
+msgid "persons invited you to the forum"
+msgstr "personer har bjudit in dig att gå med i diskussionsforumet"
+
 #: source/php/Helper/Message.php:51
 msgid "a post type you follow"
 msgstr "en posttyp du följer"
@@ -154,30 +166,21 @@ msgstr "en posttyp du följer"
 msgid "in"
 msgstr "i"
 
-#: source/php/Helper/Message.php:123
+#: source/php/Helper/Message.php:126
 msgid "Someone"
 msgstr "Någon"
 
-#: source/php/Summary.php:74
+#: source/php/Summary.php:78
 msgid "Your latest notifications"
 msgstr "Dina senaste aviseringar"
 
-#: source/php/Summary.php:75
+#: source/php/Summary.php:79
 msgid "This message was sent via"
 msgstr "Meddelandet skickades via"
 
-#: source/php/Summary.php:84
+#: source/php/Summary.php:88
 msgid "New notifications"
 msgstr "Nya aviseringar"
-
-#: vendor/helsingborg-stad/acf-export-manager/src/AcfExportManager.php:362
-msgid "Export with AcfExportManager"
-msgstr ""
-
-#: vendor/helsingborg-stad/acf-export-manager/src/AcfExportManager.php:406
-#, php-format
-msgid "Exported %d fieldgroup(s)."
-msgstr ""
 
 #: views/dropdown.blade.php:6
 msgid "Notifications"

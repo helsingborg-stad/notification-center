@@ -70,10 +70,10 @@ return [
     ],
     8 => [
         'type' => 'post',
-        'label' => __('Group', 'notification-center'),
-        'description' => 'New group invitation',
+        'label' => __('Forum', 'notification-center'),
+        'description' => 'New forum invitation',
         'icon' => '<i class="pricon pricon-badge pricon-group"></i>',
-        'message_singular' => __('invited you to the group', 'notification-center'),
-        'message_plural' => __('persons invited you to the group', 'notification-center')
+        'message_singular' => __('invited you to the forum', 'notification-center'),
+        'message_plural' => __('persons invited you to the forum', 'notification-center')
     ]
 ];

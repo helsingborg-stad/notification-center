@@ -14,7 +14,7 @@ class Post extends \NotificationCenter\Notification
     }
 
     /**
-     * Notification on group invite
+     * Notification on forum invite
      * @param  int      $postId      Post ID
      * @param  obj      $sender      Senders user object
      * @param  array    $recipients  List of recipients
@@ -27,7 +27,7 @@ class Post extends \NotificationCenter\Notification
             return;
         }
 
-        /** Entity #8 : New group invitation **/
+        /** Entity #8 : New forum invitation **/
         // Collect recipients IDs
         $notifiers = array();
         if (is_array($recipients) && !empty($recipients)) {
