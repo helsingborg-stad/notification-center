@@ -126,8 +126,8 @@ class Post extends \NotificationCenter\Notification
         /** Entity #4 : New post update **/
         $user = wp_get_current_user();
         $followers = get_post_meta($postId, 'post_followers', true);
-        $followers = array_keys(array_filter($followers));
         if (is_array($followers) && !empty($followers) && $user) {
+            $followers = array_keys(array_filter($followers));
             $this->insertNotifications(4, $postId, $followers, $user->ID, $postId);
         }
     }
