@@ -8,6 +8,7 @@ class Comment extends \NotificationCenter\Notification
     {
         add_action('wp_insert_comment', array($this, 'newComment'), 99, 2);
         add_action('delete_comment', array($this, 'deleteCommentNotifications'), 10, 2);
+        add_filter('wp_update_comment_data', array($this, 'updatedComment'), 10, 3);
     }
 
     /**
@@ -122,5 +123,35 @@ class Comment extends \NotificationCenter\Notification
 
             $this->insertNotifications(3, $commentId, $notifiers, $commentObj->user_id, $postId);
         }
+    }
+
+    /**
+     * Notify mentioned users on comment update
+     * @param array $data       The new, processed comment data.
+     * @param array $comment    The old, unslashed comment data.
+     * @param array $commentArr The new, raw comment data.
+     */
+    public function updatedComment($data, $comment, $commentArr)
+    {
+        $pattern = '/data-mention-id="(\d*?)"/';
+
+        // Extract old mentioned users
+        preg_match_all($pattern, stripslashes($comment['comment_content']), $oldMatches);
+
+        // Extract new mentioned users
+        preg_match_all($pattern, stripslashes($data['comment_content']), $newMatches);
+
+        // Keep the newly mentioned users
+        $notifiers = array_diff($newMatches[1] ?? array(), $oldMatches[1] ?? array());
+
+        // Notify all mentioned users
+        if (is_array($notifiers) && !empty($notifiers)) {
+            foreach ($notifiers as $notifier) {
+                /** Entity #7 : User mention in comments **/
+                $this->insertNotifications(7, $data['comment_ID'], array((int) $notifier), $data['user_id'], $data['comment_post_ID']);
+            }
+        }
+
+        return $data;
     }
 }
