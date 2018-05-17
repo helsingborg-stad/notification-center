@@ -86,5 +86,11 @@
   height: 7px;
   border-radius: 50%; }
 
+.notification-toggle[data-unseen="0"] > .notification-toggle__icon {
+  opacity: 0.5; }
+
 .notification-toggle[data-unseen="0"] > .notification-toggle__icon::after {
   content: none; }
+
+.notification-toggle > .notification-toggle__icon:hover, .notification-toggle.dropdown-open > .notification-toggle__icon {
+  opacity: 1; }

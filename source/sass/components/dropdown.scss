@@ -123,7 +123,15 @@
 		border-radius: 50%;
 	}
 
+	&[data-unseen="0"] > &__icon {
+		opacity: 0.5;
+	}
+
 	&[data-unseen="0"] > &__icon::after {
 		content: none;
+	}
+
+	& > &__icon:hover, &.dropdown-open > &__icon {
+		opacity: 1;
 	}
 }
