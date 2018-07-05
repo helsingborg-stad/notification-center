@@ -1,4 +1,4 @@
-NotificationCenter = NotificationCenter || {};
+var NotificationCenter = NotificationCenter || {};
 NotificationCenter.Notifications = NotificationCenter.Notifications || {};
 
 NotificationCenter.Notifications.Dropdown = (function ($) {
@@ -11,16 +11,17 @@ NotificationCenter.Notifications.Dropdown = (function ($) {
         this.handleEvents();
     }
 
+
     /**
      * Change notification status to "seen"
      */
-    Dropdown.prototype.changeStatus = function(notificationIds) {
+    Dropdown.prototype.changeStatus = function (notificationIds) {
         return $.ajax({
             url: ajaxurl,
             type: 'post',
             data: {
-                action : 'change_status',
-                notificationIds : notificationIds
+                action: 'change_status',
+                notificationIds: notificationIds
             }
         });
     };
@@ -28,30 +29,30 @@ NotificationCenter.Notifications.Dropdown = (function ($) {
     /**
      * Load more notifications
      */
-    Dropdown.prototype.loadMore = function($target) {
+    Dropdown.prototype.loadMore = function ($target) {
         offset = $('.notification-center__item', $target).length;
 
         return $.ajax({
             url: ajaxurl,
             type: 'post',
             data: {
-                action : 'load_more',
-                offset : offset
+                action: 'load_more',
+                offset: offset
             },
-            beforeSend: function() {
+            beforeSend: function () {
                 $target.append('<li class="notification-center__loading loading-wrapper"><div class="loading"><div></div><div></div><div></div><div></div></div></li>');
             },
-            complete: function() {
+            complete: function () {
                 $('.notification-center__loading', $target).remove();
             },
-            success: function(response) {
+            success: function (response) {
                 if (response.length === 0) {
                     offset = null;
                 } else {
                     $target.append(response);
                 }
             },
-            error: function(error) {
+            error: function (error) {
                 offset = null;
             },
         });
@@ -62,11 +63,14 @@ NotificationCenter.Notifications.Dropdown = (function ($) {
      * @return {void}
      */
     Dropdown.prototype.handleEvents = function () {
-        $('.notification-center__list').bind('scroll', function(e) {
-            $target = $(e.currentTarget);
-            if ($target.scrollTop() + $target.innerHeight() >= $target[0].scrollHeight
-                && $target.find('.notification-center__loading').length === 0
-                && offset !== null) {
+
+        if (unseenVal > 0) {
+            $('.notification-toggle').prepend('<style class="unseenNumbers">.notification-toggle__icon::after{content: "' + unseenVal + '" !important;}</style>');
+        }
+
+        $('.notification-center__list').bind('scroll', function (e) {
+            var $target = $(e.currentTarget);
+            if ($target.scrollTop() + $target.innerHeight() >= $target[0].scrollHeight && $target.find('.notification-center__loading').length === 0 && offset !== null) {
                 this.loadMore($target);
             }
         }.bind(this));
@@ -84,8 +88,15 @@ NotificationCenter.Notifications.Dropdown = (function ($) {
             $unseenTarget.attr('data-unseen', unseenVal);
             $(e.target).closest('.notification-center__item--unseen').removeClass('notification-center__item--unseen');
 
+            // Notification number
+            $('.unseenNumbers').detach();
+            $('.notification-toggle').prepend('<style class="unseenNumbers">.notification-toggle__icon::after{content: "' + unseenVal + '" !important;}</style>');
+            if (unseenVal <= 0) {
+                $('.unseenNumbers').detach();
+            }
+
             // Redirect to target url
-            setTimeout(function() {
+            setTimeout(function () {
                 window.location.replace(href);
             }, 60);
 
