@@ -1,23 +1,23 @@
 .notification-center {
 	padding: 0px;
 	margin-top: 15px !important;
-    width: 457px;
-    left: auto;
-    right: -12px;
-    top: 100%;
+	width: 457px;
+	left: auto;
+	right: -12px;
+	top: 100%;
 	font-size: 0.75em;
 
-    @media #{$screen-below-md} {
-        left: 0;
-        right: 0;
-        margin-top: 0 !important;
-        width: auto;
+	@media #{$screen-below-md} {
+		left: 0;
+		right: 0;
+		margin-top: 0 !important;
+		width: auto;
 
-        &::before,
-        &::after {
-            display: none !important;
-        }
-    }
+		&::before,
+		&::after {
+			display: none !important;
+		}
+	}
 
 	&__header {
 		padding: 7px;
@@ -39,45 +39,45 @@
 
 	& &__item {
 		height: auto;
-	 	border-top: 1px solid darken($white,10%);
+		border-top: 1px solid darken($white,10%);
 
-	 	&:first-child {
-	 		border-top: none;
-	 	}
+		&:first-child {
+			border-top: none;
+		}
 
 		:hover {
 			background-color: darken($gray,5%);
 		}
 
 		a {
-	 		padding: 10px;
-	 		display:block;
-	 		color: #000;
-	 		text-decoration: none;
+			padding: 10px;
+			display:block;
+			color: #000;
+			text-decoration: none;
 
-	 		&:focus {
-	 			text-decoration: none !important;
-	 		}
-	 	}
+			&:focus {
+				text-decoration: none !important;
+			}
+		}
 
-	 	&__wrapper {
-	 		display: flex;
-	 		align-items: center;
-	 	}
+		&__wrapper {
+			display: flex;
+			align-items: center;
+		}
 
-	 	&__entity {
+		&__entity {
 			padding-right: 13px;
 
 			.pricon {
 				font-size: 17px;
 				background-color: darken($gray,20%);
 			}
-	 	}
+		}
 
-	 	&--unseen {
+		&--unseen {
 			background-color: $gray;
 
-		 	.notification-center__message::before {
+			.notification-center__message::before {
 				content: '';
 				display: inline-block;
 				width: 6px;
@@ -89,18 +89,18 @@
 		}
 	}
 
- 	&__time {
- 		clear: both;
- 		color: darken($white,40%);
- 		font-size: 0.9em;
- 	}
+	&__time {
+		clear: both;
+		color: darken($white,40%);
+		font-size: 0.9em;
+	}
 
- 	&__empty {
- 		background-color: $gray;
- 		color: darken($white,70%);
- 		padding: 20px;
+	&__empty {
+		background-color: $gray;
+		color: darken($white,70%);
+		padding: 20px;
 		text-align: center;
- 	}
+	}
 }
 
 .notification-toggle {
@@ -113,14 +113,27 @@
 	}
 
 	&[data-unseen] > &__icon::after {
-		content: " ";
+
 		position: absolute;
-		top: 0px;
-		right: 0px;
-		background: $red;
-		width: 7px;
-		height: 7px;
+		top: -9px;
+		right: -9px;
+		background: #FFD700;
+		width: 19px;
+		height: 19px;
 		border-radius: 50%;
+		color: #000;
+		font-size: 11px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-weight: 600;
+		-webkit-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.42);
+		-moz-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.42);
+		box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.42);
+
+		animation: bleep-frame 350ms ease-in-out;
+		animation-iteration-count: 1;
+
 	}
 
 	&[data-unseen="0"] > &__icon {
@@ -133,5 +146,20 @@
 
 	& > &__icon:hover, &.dropdown-open > &__icon {
 		opacity: 1;
+	}
+}
+
+
+
+@keyframes bleep-frame {
+
+	50% {
+
+		transform: scale(1.5);
+	}
+
+	100% {
+
+		transform: scale(1);
 	}
 }
