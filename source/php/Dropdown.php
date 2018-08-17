@@ -9,6 +9,7 @@ class Dropdown
         add_action('init', array($this, 'registerShortcodes'));
         add_action('wp_ajax_change_status', array($this, 'changeStatus'));
         add_action('wp_ajax_load_more', array($this, 'loadMore'));
+        add_action('wp_ajax_read_all', array($this, 'markAllAsRead'));
     }
 
     /**
@@ -143,4 +144,26 @@ class Dropdown
         echo 'success';
         wp_die();
     }
+
+    /**
+     * Mark all notifications as read
+     */
+    public function markAllAsRead()
+    {
+        ignore_user_abort(true);
+
+        global $wpdb;
+        $user   = wp_get_current_user();
+        $userId = $user->ID;
+
+        $wpdb->query("
+            UPDATE {$wpdb->base_prefix}notifications
+            SET status = 1
+            WHERE notifier_id = $userId
+        ");
+
+        echo 'success';
+        wp_die();
+    }
+
 }

@@ -11,7 +11,6 @@ NotificationCenter.Notifications.Dropdown = (function ($) {
         this.handleEvents();
     }
 
-
     /**
      * Change notification status to "seen"
      */
@@ -22,6 +21,19 @@ NotificationCenter.Notifications.Dropdown = (function ($) {
             data: {
                 action: 'change_status',
                 notificationIds: notificationIds
+            }
+        });
+    };
+
+    /**
+     * Mark all notifications as read
+     */
+    Dropdown.prototype.readAll = function () {
+        return $.ajax({
+            url: ajaxurl,
+            type: 'post',
+            data: {
+                action: 'read_all',
             }
         });
     };
@@ -63,7 +75,6 @@ NotificationCenter.Notifications.Dropdown = (function ($) {
      * @return {void}
      */
     Dropdown.prototype.handleEvents = function () {
-
         if (unseenVal > 0) {
             $('.notification-toggle').prepend('<style class="unseenNumbers">.notification-toggle__icon::after{content: "' + unseenVal + '" !important;}</style>');
         }
@@ -99,7 +110,14 @@ NotificationCenter.Notifications.Dropdown = (function ($) {
             setTimeout(function () {
                 window.location.replace(href);
             }, 60);
+        }.bind(this));
 
+        $(document).on('click', '.js-read-all', function (e) {
+            e.preventDefault();
+            $unseenTarget.attr('data-unseen', 0);
+            $('.unseenNumbers').detach();
+            $('.notification-center__item--unseen').removeClass('notification-center__item--unseen');
+            this.readAll();
         }.bind(this));
     };
 
