@@ -1,15 +1,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Notification Center\n"
-"POT-Creation-Date: 2018-03-27 14:44+0200\n"
-"PO-Revision-Date: 2018-03-27 14:44+0200\n"
+"POT-Creation-Date: 2018-08-17 15:40+0200\n"
+"PO-Revision-Date: 2018-08-17 15:40+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.0.8\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
@@ -182,15 +182,19 @@ msgstr "Meddelandet skickades via"
 msgid "New notifications"
 msgstr "Nya aviseringar"
 
-#: views/dropdown.blade.php:6
+#: views/dropdown.blade.php:9
 msgid "Notifications"
 msgstr "Aviseringar"
 
-#: views/dropdown.blade.php:15
+#: views/dropdown.blade.php:12
+msgid "Mark all as read"
+msgstr "﻿Markera alla som lästa"
+
+#: views/dropdown.blade.php:24
 msgid "You don't have any notifications"
 msgstr "Du har inga aviseringar"
 
-#: views/email-summary.blade.php:10
+#: views/email-summary.blade.php:11
 msgid "Show"
 msgstr "Visa"
 
