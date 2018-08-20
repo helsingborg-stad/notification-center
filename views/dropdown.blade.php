@@ -6,12 +6,11 @@
         <div class="notification-center__header">
             <div class="grid grid-va-middle">
                 <div class="grid-auto u-mr-auto">
-                    <?php _e('Notifications', 'notification-center'); ?>
+                    <p><?php _e('Notifications', 'notification-center'); ?></p>
                 </div>
                 @if($unseen > 0)
                     <div class="grid-fit-content">
-                        <button type="button"
-                                class="btn btn-sm js-read-all"><?php _e('Mark all as read', 'notification-center'); ?></button>
+                        <a href="#" class="text-sm read-all js-read-all"><?php _e('Mark all as read', 'notification-center'); ?></a>
                     </div>
                 @endif
             </div>

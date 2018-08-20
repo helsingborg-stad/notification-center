@@ -165,5 +165,4 @@ class Dropdown
         echo 'success';
         wp_die();
     }
-
 }

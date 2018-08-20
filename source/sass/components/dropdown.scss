@@ -21,9 +21,17 @@
 
 	&__header {
 		padding: 7px;
-		font-weight: 500;
-		color: darken($white,70%);
 		border-bottom: 1px solid darken($white,10%);
+		color: darken($white,70%);
+
+		p {
+			font-weight: 500;
+		}
+
+		div a {
+			padding: 0;
+			color: inherit;
+		}
 	}
 
 	&__list {
@@ -112,7 +120,6 @@
 	}
 
 	&[data-unseen] > &__icon::after {
-
 		position: absolute;
 		top: -9px;
 		right: -9px;
@@ -132,7 +139,6 @@
 
 		animation: bleep-frame 350ms ease-in-out;
 		animation-iteration-count: 1;
-
 	}
 
 	&[data-unseen="0"] > &__icon {
@@ -148,17 +154,12 @@
 	}
 }
 
-
-
 @keyframes bleep-frame {
-
 	50% {
-
 		transform: scale(1.5);
 	}
 
 	100% {
-
 		transform: scale(1);
 	}
 }

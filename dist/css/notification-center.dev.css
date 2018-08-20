@@ -16,9 +16,13 @@
         display: none !important; } }
   .notification-center__header {
     padding: 7px;
-    font-weight: 500;
-    color: #4d4d4d;
-    border-bottom: 1px solid #e6e6e6; }
+    border-bottom: 1px solid #e6e6e6;
+    color: #4d4d4d; }
+    .notification-center__header p {
+      font-weight: 500; }
+    .notification-center__header div a {
+      padding: 0;
+      color: inherit; }
   .notification-center__list {
     max-height: 328px;
     overflow-y: scroll; }
