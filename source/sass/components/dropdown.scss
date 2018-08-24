@@ -1,170 +1,170 @@
 .notification-center {
-	padding: 0px;
-	margin-top: 15px !important;
-	width: 457px;
-	left: auto;
-	right: -12px;
-	top: 100%;
-	font-size: 0.75em;
+    padding: 0px;
+    margin-top: 15px !important;
+    width: 457px;
+    left: auto;
+    right: -12px;
+    top: 100%;
+    font-size: 0.75em;
 
-	@media #{$screen-below-md} {
-		left: 0;
-		right: 0;
-		margin-top: 0 !important;
-		width: auto;
+    @media #{$screen-below-md} {
+        left: 0;
+        right: 0;
+        margin-top: 0 !important;
+        width: auto;
 
-		&::before,
-		&::after {
-			display: none !important;
-		}
-	}
+        &::before,
+        &::after {
+            display: none !important;
+        }
+    }
 
-	&__header {
-		padding: 7px;
-		border-bottom: 1px solid darken($white,10%);
-		color: darken($white,70%);
+    &__header {
+        padding: 7px;
+        border-bottom: 1px solid darken($white, 10%);
+        color: darken($white, 70%);
 
-		p {
-			font-weight: 500;
-		}
+        p {
+            font-weight: 500;
+        }
 
-		div a {
-			padding: 0;
-			color: inherit;
+        div a {
+            padding: 0;
+            color: inherit;
 
-			&:hover {
-				background-color: transparent;
-				text-decoration: underline;
-			}
-		}
-	}
+            &:hover {
+                background-color: transparent;
+                text-decoration: underline;
+            }
+        }
+    }
 
-	&__list {
-		max-height: 328px;
-		overflow-y: scroll;
-	}
+    &__list {
+        max-height: 328px;
+        overflow-y: scroll;
+    }
 
-	&__loading {
-		border-top: 1px solid darken($white,10%);
-		padding: 10px;
-	}
+    &__loading {
+        border-top: 1px solid darken($white, 10%);
+        padding: 10px;
+    }
 
-	& &__item {
-		height: auto;
-		border-top: 1px solid darken($white,10%);
+    & &__item {
+        height: auto;
+        border-top: 1px solid darken($white, 10%);
 
-		&:first-child {
-			border-top: none;
-		}
+        &:first-child {
+            border-top: none;
+        }
 
-		:hover {
-			background-color: darken($gray,5%);
-		}
+        :hover {
+            background-color: darken($gray, 5%);
+        }
 
-		a {
-			padding: 10px;
-			display:block;
-			color: #000;
-			text-decoration: none;
+        a {
+            padding: 10px;
+            display: block;
+            color: #000;
+            text-decoration: none;
 
-			&:focus {
-				text-decoration: none !important;
-			}
-		}
+            &:focus {
+                text-decoration: none !important;
+            }
+        }
 
-		&__wrapper {
-			display: flex;
-			align-items: center;
-		}
+        &__wrapper {
+            display: flex;
+            align-items: center;
+        }
 
-		&__entity {
-			padding-right: 13px;
+        &__entity {
+            padding-right: 13px;
 
-			.pricon {
-				font-size: 17px;
-				background-color: darken($gray,20%);
-			}
-		}
+            .pricon {
+                font-size: 17px;
+                background-color: darken($gray, 20%);
+            }
+        }
 
-		&--unseen {
-			background-color: $gray;
+        &--unseen {
+            background-color: $gray;
 
-			.notification-center__message::before {
-				content: '';
-				display: inline-block;
-				width: 6px;
-				height: 6px;
-				margin: 2px;
-				border-radius: 50%;
-				background-color: $blue;
-			}
-		}
-	}
+            .notification-center__message::before {
+                content: '';
+                display: inline-block;
+                width: 6px;
+                height: 6px;
+                margin: 2px;
+                border-radius: 50%;
+                background-color: $blue;
+            }
+        }
+    }
 
-	&__time {
-		clear: both;
-		color: darken($white,40%);
-		font-size: 0.9em;
-	}
+    &__time {
+        clear: both;
+        color: darken($white, 40%);
+        font-size: 0.9em;
+    }
 
-	&__empty {
-		background-color: $gray;
-		color: darken($white,70%);
-		padding: 20px;
-		text-align: center;
-	}
+    &__empty {
+        background-color: $gray;
+        color: darken($white, 70%);
+        padding: 20px;
+        text-align: center;
+    }
 }
 
 .notification-toggle {
-	&:hover {
-		cursor: pointer;
-	}
+    &:hover {
+        cursor: pointer;
+    }
 
-	&__icon {
-		position: relative;
-	}
+    &__icon {
+        position: relative;
 
-	&[data-unseen] > &__icon::after {
-		position: absolute;
-		top: -9px;
-		right: -9px;
-		background: #FFD700;
-		width: 19px;
-		height: 19px;
-		border-radius: 50%;
-		color: #000;
-		font-size: 11px;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		font-weight: 600;
-		-webkit-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.42);
-		-moz-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.42);
-		box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.42);
+        &::after {
+            content: attr(data-unseen);
+            position: absolute;
+            top: -9px;
+            right: -9px;
+            background: #FFD700;
+            width: 19px;
+            height: 19px;
+            border-radius: 50%;
+            color: #000;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            -webkit-box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.42);
+            -moz-box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.42);
+            box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.42);
+            animation: bleep-frame 350ms ease-in-out;
+            animation-iteration-count: 1;
+        }
 
-		animation: bleep-frame 350ms ease-in-out;
-		animation-iteration-count: 1;
-	}
+        &[data-unseen="0"] {
+            opacity: 0.5;
+        }
 
-	&[data-unseen="0"] > &__icon {
-		opacity: 0.5;
-	}
+        &[data-unseen="0"]::after {
+            content: none;
+        }
+    }
 
-	&[data-unseen="0"] > &__icon::after {
-		content: none;
-	}
-
-	& > &__icon:hover, &.dropdown-open > &__icon {
-		opacity: 1;
-	}
+    & > &__icon:hover, &.dropdown-open > &__icon {
+        opacity: 1;
+    }
 }
 
 @keyframes bleep-frame {
-	50% {
-		transform: scale(1.5);
-	}
+    50% {
+        transform: scale(1.5);
+    }
 
-	100% {
-		transform: scale(1);
-	}
+    100% {
+        transform: scale(1);
+    }
 }

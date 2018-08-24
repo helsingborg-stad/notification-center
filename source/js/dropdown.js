@@ -3,9 +3,9 @@ NotificationCenter.Notifications = NotificationCenter.Notifications || {};
 
 NotificationCenter.Notifications.Dropdown = (function ($) {
 
-    var unseenVal = $('.notification-toggle').attr('data-unseen');
-    var $unseenTarget = $('.notification-toggle');
-    var offset = 0;
+    var $unseenTarget = $('.notification-toggle__icon'),
+        unseenVal = $unseenTarget.attr('data-unseen'),
+        offset = 0;
 
     function Dropdown() {
         this.handleEvents();
@@ -75,10 +75,6 @@ NotificationCenter.Notifications.Dropdown = (function ($) {
      * @return {void}
      */
     Dropdown.prototype.handleEvents = function () {
-        if (unseenVal > 0) {
-            $('.notification-toggle').prepend('<style class="unseenNumbers">.notification-toggle__icon::after{content: "' + unseenVal + '" !important;}</style>');
-        }
-
         $('.notification-center__list').bind('scroll', function (e) {
             var $target = $(e.currentTarget);
             if ($target.scrollTop() + $target.innerHeight() >= $target[0].scrollHeight && $target.find('.notification-center__loading').length === 0 && offset !== null) {
@@ -99,13 +95,6 @@ NotificationCenter.Notifications.Dropdown = (function ($) {
             $unseenTarget.attr('data-unseen', unseenVal);
             $(e.target).closest('.notification-center__item--unseen').removeClass('notification-center__item--unseen');
 
-            // Notification number
-            $('.unseenNumbers').detach();
-            $('.notification-toggle').prepend('<style class="unseenNumbers">.notification-toggle__icon::after{content: "' + unseenVal + '" !important;}</style>');
-            if (unseenVal <= 0) {
-                $('.unseenNumbers').detach();
-            }
-
             // Redirect to target url
             setTimeout(function () {
                 window.location.replace(href);
@@ -115,7 +104,6 @@ NotificationCenter.Notifications.Dropdown = (function ($) {
         $(document).on('click', '.js-read-all', function (e) {
             e.preventDefault();
             $unseenTarget.attr('data-unseen', 0);
-            $('.unseenNumbers').detach();
             $('.notification-center__item--unseen').removeClass('notification-center__item--unseen');
             this.readAll();
         }.bind(this));

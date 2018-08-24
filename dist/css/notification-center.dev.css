@@ -81,33 +81,31 @@
 
 .notification-toggle__icon {
   position: relative; }
-
-.notification-toggle[data-unseen] > .notification-toggle__icon::after {
-  position: absolute;
-  top: -9px;
-  right: -9px;
-  background: #FFD700;
-  width: 19px;
-  height: 19px;
-  border-radius: 50%;
-  color: #000;
-  font-size: 11px;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-align: center;
-      align-items: center;
-  -ms-flex-pack: center;
-      justify-content: center;
-  font-weight: 600;
-  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.42);
-  animation: bleep-frame 350ms ease-in-out;
-  animation-iteration-count: 1; }
-
-.notification-toggle[data-unseen="0"] > .notification-toggle__icon {
-  opacity: 0.5; }
-
-.notification-toggle[data-unseen="0"] > .notification-toggle__icon::after {
-  content: none; }
+  .notification-toggle__icon::after {
+    content: attr(data-unseen);
+    position: absolute;
+    top: -9px;
+    right: -9px;
+    background: #FFD700;
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    color: #000;
+    font-size: 11px;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+        align-items: center;
+    -ms-flex-pack: center;
+        justify-content: center;
+    font-weight: 600;
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.42);
+    animation: bleep-frame 350ms ease-in-out;
+    animation-iteration-count: 1; }
+  .notification-toggle__icon[data-unseen="0"] {
+    opacity: 0.5; }
+  .notification-toggle__icon[data-unseen="0"]::after {
+    content: none; }
 
 .notification-toggle > .notification-toggle__icon:hover, .notification-toggle.dropdown-open > .notification-toggle__icon {
   opacity: 1; }
