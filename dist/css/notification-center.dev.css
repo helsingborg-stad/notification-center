@@ -23,6 +23,9 @@
     .notification-center__header div a {
       padding: 0;
       color: inherit; }
+      .notification-center__header div a:hover {
+        background-color: transparent;
+        text-decoration: underline; }
   .notification-center__list {
     max-height: 328px;
     overflow-y: scroll; }
