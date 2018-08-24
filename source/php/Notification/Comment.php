@@ -9,6 +9,7 @@ class Comment extends \NotificationCenter\Notification
         add_action('wp_insert_comment', array($this, 'newComment'), 99, 2);
         add_action('delete_comment', array($this, 'deleteCommentNotifications'), 10, 2);
         add_filter('wp_update_comment_data', array($this, 'updatedComment'), 10, 3);
+        add_action('Municipio/comment/save_like', array($this, 'saveCommentLike'), 10, 3);
     }
 
     /**
@@ -153,5 +154,24 @@ class Comment extends \NotificationCenter\Notification
         }
 
         return $data;
+    }
+
+    /**
+     * Save like notification
+     * @param object $commentObj The comment object
+     * @param int $userId Current users ID
+     * @param bool $create True if a new like is created or should be removed
+     */
+    public function saveCommentLike($commentObj, $userId, $create)
+    {
+        global $wpdb;
+        $blogId = get_current_blog_id();
+
+        if ($create) {
+            $this->insertNotifications(9, $commentObj->comment_ID, array((int) $commentObj->user_id),(int) $userId, $commentObj->comment_post_ID);
+        } else {
+            $dbTable = $wpdb->base_prefix . 'notification_objects';
+            $wpdb->query("DELETE FROM {$dbTable} WHERE sender_id = {$userId} AND entity_id = {$commentObj->comment_ID} AND entity_type = 9 AND blog_id = {$blogId}");
+        }
     }
 }

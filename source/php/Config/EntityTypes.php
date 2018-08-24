@@ -75,5 +75,13 @@ return [
         'icon' => '<i class="pricon pricon-badge pricon-group"></i>',
         'message_singular' => __('invited you to the forum', 'notification-center'),
         'message_plural' => __('persons invited you to the forum', 'notification-center')
+    ],
+    9 => [
+        'type' => 'comment',
+        'label' => __('Like', 'notification-center'),
+        'description' => 'New comment like',
+        'icon' => '<i class="pricon pricon-badge pricon-thumbs-up"></i>',
+        'message_singular' => __('liked your comment on', 'notification-center'),
+        'message_plural' => __('persons liked your comment on', 'notification-center')
     ]
 ];
