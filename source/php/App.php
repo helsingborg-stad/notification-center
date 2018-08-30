@@ -25,7 +25,8 @@ class App
      * Allow data-user-id attribute for @mentions links
      * @return void
      */
-    public function allowLinkAttr() {
+    public function allowLinkAttr()
+    {
         global $allowedposttags, $allowedtags;
         $newattribute = "data-mention-id";
 
@@ -39,7 +40,7 @@ class App
      */
     public function enqueueStyles()
     {
-        wp_enqueue_style('notification-center', NOTIFICATIONCENTER_URL . '/dist/css/notification-center.min.css');
+        wp_enqueue_style('notification-center', NOTIFICATIONCENTER_URL . '/dist/' . Helper\CacheBust::name('css/notification-center.css'));
     }
 
     /**
@@ -48,10 +49,10 @@ class App
      */
     public function enqueueScripts()
     {
-        wp_enqueue_script('notification-center', NOTIFICATIONCENTER_URL . '/dist/js/notification-center.min.js', 'jquery', false, true);
+        wp_enqueue_script('notification-center', NOTIFICATIONCENTER_URL . '/dist/' . Helper\CacheBust::name('js/notification-center.js'), 'jquery', false, true);
         wp_localize_script('notification-center', 'notificationCenter', array(
-            'follow'    => __('Follow', 'notification-center'),
-            'unfollow'  => __('Unfollow', 'notification-center'),
+            'follow' => __('Follow', 'notification-center'),
+            'unfollow' => __('Unfollow', 'notification-center'),
         ));
         wp_enqueue_script('notification-center');
     }
@@ -60,7 +61,7 @@ class App
      * Returns activated post types
      * @return array Activated posttypes
      */
-    public static function activePostTypes() : array
+    public static function activePostTypes(): array
     {
         return apply_filters('notification_center/activated_posttypes', get_post_types(array('public' => true)));
     }
@@ -69,7 +70,7 @@ class App
      * Checks if notifications is activated for a post type
      * @return boolean
      */
-    public static function isActivated($postType) : bool
+    public static function isActivated($postType): bool
     {
         if (empty($postType)) {
             return false;
