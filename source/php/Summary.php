@@ -32,10 +32,11 @@ class Summary
         }
 
         global $wpdb;
+        $notifiedUsers = array();
 
         // Get notifiers
         $notifiers = $wpdb->get_results("
-            SELECT u.ID, u.user_email
+            SELECT u.ID, u.user_email, u.user_login
             FROM {$wpdb->users} u
             JOIN {$wpdb->prefix}notifications n
                 ON n.notifier_id = u.ID
@@ -49,7 +50,7 @@ class Summary
         foreach ($notifiers as $key => $notifier) {
             // Skip if user have disabled emails
             $disabled = get_user_meta($notifier->ID, 'disable_notification_email', true);
-            if ($disabled == true) {
+            if ($disabled == true || in_array($notifier->user_login, $notifiedUsers)) {
                 continue;
             }
 
@@ -96,6 +97,8 @@ class Summary
                     'Content-Type: text/html; charset=UTF-8'
                 )
             );
+            // Save user to array to avoid sending duplicate emails
+            $notifiedUsers[] = $notifier->user_login;
         }
     }
 }
