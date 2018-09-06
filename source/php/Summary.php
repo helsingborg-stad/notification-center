@@ -61,7 +61,7 @@ class Summary
                     ON n.notification_object_id = no.ID
                 WHERE n.notifier_id = {$notifier->ID}
                     AND n.status = 0
-                    AND no.created BETWEEN NOW() - INTERVAL 48 HOUR AND NOW() - INTERVAL 24 HOUR
+                    AND no.created BETWEEN NOW() - INTERVAL 48 HOUR AND NOW()
                 GROUP BY CASE
                             WHEN no.post_id IS NOT NULL
                             THEN 1
@@ -77,8 +77,8 @@ class Summary
             $data = array();
             $data['heading'] = (!empty(get_field('notification_email_heading', 'option'))) ? get_field('notification_email_heading', 'option') : __('Your latest notifications', 'notification-center');
             $data['footer'] = apply_filters('notification_center/email_footer', sprintf('%s <a href="%s">%s</a>', __('This message was sent via', 'notification-center'), get_option('home'), get_option('home')));
-            $data['entityTypes']    = \NotificationCenter\Helper\EntityTypes::getEntityTypes();
-            $data['notifications']  = $notifications;
+            $data['entityTypes'] = Helper\EntityTypes::getEntityTypes();
+            $data['notifications'] = $notifications;
 
             $emailTemplate = Helper\Display::blade('email-summary', $data);
             $emailTemplate = '<html><body style="background:#fff; padding: 10px; font-family: Helvetica, Arial, Verdana, sans-serif;">' . $emailTemplate . '</body></html>';
