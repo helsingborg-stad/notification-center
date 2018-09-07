@@ -61,7 +61,7 @@ class Post extends \NotificationCenter\Notification
             if (!empty($followers)) {
                 $followers = array_keys(array_filter($followers));
                 if (is_array($followers) && !empty($followers)) {
-                    $this->insertNotifications(5, $post->ID, $followers, $post->post_author, $post->ID);
+                    $this->insertNotifications(5, $post->ID, $followers, get_current_user_id(), $post->ID);
                 }
             }
         }
