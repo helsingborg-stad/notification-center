@@ -80,7 +80,7 @@ class Follow
     /**
      * Add follower metadata when a post is created
      * @param int $postId The post ID.
-     * @param post $post The post object.
+     * @param object $post The post object.
      * @param bool $update Whether this is an existing post being updated or not.
      */
     public function addFollowerMeta($postId, $post, $update)
@@ -123,7 +123,7 @@ class Follow
         $postType = is_archive() ? $queriedObject->name : get_post_type($post);
 
         // Bail if user is not logged in or notifications is not activated or is front page
-        if (!is_user_logged_in() || !\NotificationCenter\App::isActivated($postType) ||is_front_page()) {
+        if (!is_page() || !is_user_logged_in() || !\NotificationCenter\App::isActivated($postType) ||is_front_page()) {
             return $items;
         }
 
