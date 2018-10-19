@@ -123,7 +123,7 @@ class Follow
         $postType = is_archive() ? $queriedObject->name : get_post_type($post);
 
         // Bail if user is not logged in or notifications is not activated or is front page
-        if (!is_page() || !is_user_logged_in() || !\NotificationCenter\App::isActivated($postType) ||is_front_page()) {
+        if (!(is_page() || (is_archive() && !in_the_loop())) || !is_user_logged_in() || !App::isActivated($postType) ||is_front_page()) {
             return $items;
         }
 
